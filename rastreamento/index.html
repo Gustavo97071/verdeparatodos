@@ -182,24 +182,66 @@
             flex-wrap: wrap;
         }
 
-        .btn-sim-toggle {
-            background: #0f172a;
-            color: #fff;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
+        .sim-buttons-row {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            width: 100%;
         }
 
-        .btn-sim-toggle:hover {
-            background: #334155;
-            transform: translateY(-1px);
+        .btn-milestone {
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 0.70rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1 1 calc(33.3% - 6px);
+            text-align: center;
+        }
+
+        @media (min-width: 500px) {
+            .btn-milestone {
+                flex: 1;
+            }
+        }
+
+        .btn-milestone:hover {
+            border-color: #2E5026;
+            color: #2E5026;
+        }
+
+        .btn-milestone.active {
+            background: #2E5026 !important;
+            border-color: #2E5026 !important;
+            color: #fff !important;
+        }
+
+        .btn-milestone.highlight-fee {
+            border-color: #f59e0b;
+            color: #b45309;
+            background: #fffbeb;
+        }
+
+        .btn-milestone.highlight-fee.active {
+            background: #d97706 !important;
+            border-color: #d97706 !important;
+            color: #fff !important;
+        }
+
+        .btn-milestone.btn-real {
+            background: #0f172a;
+            color: #fff;
+            border-color: #0f172a;
+        }
+
+        .btn-milestone.btn-real.active {
+            background: #1e293b !important;
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
         }
 
         .step-item.in-progress .step-dot {
@@ -640,15 +682,24 @@
                     </div>
                 </div>
 
-                <!-- Demo / Simulation Controls Bar -->
+                <!-- Demo / Simulation Controls Bar (Progressive 48h) -->
                 <div class="sim-control-bar" id="sim-control-bar">
-                    <div style="display: flex; align-items: center; gap: 6px; color: #475569;">
-                        <i class="fa-solid fa-clock-rotate-left" style="color: #64748b;"></i>
-                        <span>Progresso Temporal: <strong id="sim-time-label">Calculando...</strong></span>
+                    <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px; color: #475569; font-size: 0.76rem;">
+                            <i class="fa-solid fa-clock-rotate-left" style="color: #64748b;"></i>
+                            <span>Tempo da Encomenda: <strong id="sim-time-label">0h (Pedido Criado)</strong></span>
+                        </div>
+                        <span style="font-size: 0.68rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Simulador das 48h</span>
                     </div>
-                    <button type="button" class="btn-sim-toggle" id="btn-sim-toggle" onclick="toggleSimulate48h()">
-                        <i class="fa-solid fa-forward"></i> <span>Avançar +48h (Ver Taxa R$12)</span>
-                    </button>
+                    <div class="sim-buttons-row">
+                        <button type="button" class="btn-milestone" id="m-btn-0" onclick="setSimulatedHours(0)">0h: Criado</button>
+                        <button type="button" class="btn-milestone" id="m-btn-8" onclick="setSimulatedHours(8)">8h: Preparo</button>
+                        <button type="button" class="btn-milestone" id="m-btn-18" onclick="setSimulatedHours(18)">18h: Postado</button>
+                        <button type="button" class="btn-milestone" id="m-btn-30" onclick="setSimulatedHours(30)">30h: CD SP</button>
+                        <button type="button" class="btn-milestone" id="m-btn-40" onclick="setSimulatedHours(40)">40h: Aduana</button>
+                        <button type="button" class="btn-milestone highlight-fee" id="m-btn-48" onclick="setSimulatedHours(48)">48h: Taxa R$12</button>
+                        <button type="button" class="btn-milestone btn-real" id="m-btn-real" onclick="setSimulatedHours(null)">🕒 Tempo Real</button>
+                    </div>
                 </div>
 
                 <h3 class="timeline-section-title"><i class="fa-solid fa-timeline"></i> Linha do Tempo da Entrega</h3>
@@ -656,63 +707,63 @@
                 <!-- 9-Step Localized Timeline -->
                 <div class="tracking-steps-list" id="tracking-steps-list">
                     
-                    <!-- 1. Pedido Criado -->
+                    <!-- 1. Pedido Criado (0h) -->
                     <div class="step-item completed" id="step-node-1">
-                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-dot" id="dot-step-1"><i class="fa-solid fa-check"></i></div>
                         <div class="step-content">
-                            <div class="step-title">Pedido criado</div>
-                            <p class="step-desc">Solicitação confirmada e cadastrada no sistema.</p>
+                            <div class="step-title" id="title-step-1">Pedido criado</div>
+                            <p class="step-desc" id="desc-step-1">Solicitação confirmada e cadastrada no sistema.</p>
                             <span class="step-date" id="date-step-1">Hoje</span>
                         </div>
                     </div>
 
-                    <!-- 2. Preparando para envio -->
-                    <div class="step-item completed" id="step-node-2">
-                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                    <!-- 2. Preparando para envio (8h) -->
+                    <div class="step-item in-progress" id="step-node-2">
+                        <div class="step-dot" id="dot-step-2"><i class="fa-solid fa-spinner fa-spin" style="color: #2563eb;"></i></div>
                         <div class="step-content">
-                            <div class="step-title">Seu pedido está sendo preparado para envio</div>
-                            <p class="step-desc">Muda selecionada na estufa e acondicionada em embalagem com raízes protegidas.</p>
-                            <span class="step-date" id="date-step-2">Hoje</span>
+                            <div class="step-title" id="title-step-2">Seu pedido está sendo preparado para envio</div>
+                            <p class="step-desc" id="desc-step-2">Muda selecionada na estufa e acondicionada em embalagem com raízes protegidas.</p>
+                            <span class="step-date" id="date-step-2">Em andamento na estufa</span>
                         </div>
                     </div>
 
-                    <!-- 3. Pedido Postado -->
-                    <div class="step-item completed" id="step-node-3">
-                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                    <!-- 3. Pedido Postado (18h - Horário Comercial 08:00 às 17:00) -->
+                    <div class="step-item locked" id="step-node-3">
+                        <div class="step-dot" id="dot-step-3"><i class="fa-solid fa-lock"></i></div>
                         <div class="step-content">
-                            <div class="step-title">Pedido postado</div>
-                            <p class="step-desc">Objeto postado na unidade emissora com código de rastreamento ativo.</p>
-                            <span class="step-date" id="date-step-3">Hoje</span>
+                            <div class="step-title" id="title-step-3">Pedido postado</div>
+                            <p class="step-desc" id="desc-step-3">Objeto postado na unidade emissora dentro do horário comercial com código de rastreamento ativo.</p>
+                            <span class="step-date" id="date-step-3">Aguardando preparo</span>
                         </div>
                     </div>
 
-                    <!-- 4. Centro Logístico de SP -->
-                    <div class="step-item completed" id="step-node-4">
-                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                    <!-- 4. Centro Logístico de SP (30h) -->
+                    <div class="step-item locked" id="step-node-4">
+                        <div class="step-dot" id="dot-step-4"><i class="fa-solid fa-lock"></i></div>
                         <div class="step-content">
-                            <div class="step-title">Seu pedido chegou ao centro logístico de São Paulo</div>
-                            <p class="step-desc">Em triagem no Centro de Distribuição Central de São Paulo/SP.</p>
-                            <span class="step-date" id="date-step-4">Hoje</span>
+                            <div class="step-title" id="title-step-4">Seu pedido chegou ao centro logístico de São Paulo</div>
+                            <p class="step-desc" id="desc-step-4">Em triagem no Centro de Distribuição Central de São Paulo/SP.</p>
+                            <span class="step-date" id="date-step-4">Aguardando postagem</span>
                         </div>
                     </div>
 
-                    <!-- 5. Fiscalização Aduaneira -->
-                    <div class="step-item completed" id="step-node-5">
-                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                    <!-- 5. Fiscalização Aduaneira (40h) -->
+                    <div class="step-item locked" id="step-node-5">
+                        <div class="step-dot" id="dot-step-5"><i class="fa-solid fa-lock"></i></div>
                         <div class="step-content">
-                            <div class="step-title">Encaminhado para fiscalização aduaneira</div>
-                            <p class="step-desc">Guia fiscal de transporte e desembaraço de carga viva emitida.</p>
-                            <span class="step-date" id="date-step-5">Hoje</span>
+                            <div class="step-title" id="title-step-5">Encaminhado para fiscalização aduaneira</div>
+                            <p class="step-desc" id="desc-step-5">Guia fiscal de transporte e desembaraço de carga viva emitida.</p>
+                            <span class="step-date" id="date-step-5">Aguardando triagem no CD de SP</span>
                         </div>
                     </div>
 
-                    <!-- 6. Aguardando Pagamento (Monetização) -->
-                    <div class="step-item current-warning" id="step-node-6">
-                        <div class="step-dot" id="dot-step-6"><i class="fa-solid fa-exclamation"></i></div>
+                    <!-- 6. Aguardando Pagamento (Monetização - 48h) -->
+                    <div class="step-item locked" id="step-node-6">
+                        <div class="step-dot" id="dot-step-6"><i class="fa-solid fa-lock"></i></div>
                         <div class="step-content">
-                            <div class="step-title" id="title-step-6">Aguardando pagamento</div>
-                            <p class="step-desc" id="desc-step-6">O envio da sua muda está retido aguardando o pagamento da taxa postal/aduaneira de liberação.</p>
-                            <span class="step-date" id="date-step-6">Hoje</span>
+                            <div class="step-title" id="title-step-6">Fiscalização aduaneira e liberação fiscal</div>
+                            <p class="step-desc" id="desc-step-6">Remessa em conferência fitossanitária de transporte de carga viva. Liberação estimada em até 48 horas da postagem.</p>
+                            <span class="step-date" id="date-step-6">Aguardando entrada aduaneira</span>
                             
                             <!-- PIX Payment Box -->
                             <div class="pix-monetize-card" id="pix-payment-box">
@@ -791,7 +842,7 @@
     <!-- Script for Tracking Page & Woovi Monetization -->
     <script>
         let currentOrder = null;
-        let isSimulating48h = false;
+        let simulatedHours = null; // null = real time; or 0, 8, 18, 30, 40, 48
         let pollTimer = null;
 
         function formatCPFInput(e) {
@@ -902,7 +953,7 @@
 
             if (found) {
                 currentOrder = found;
-                isSimulating48h = false;
+                simulatedHours = null;
                 notFoundCard.style.display = 'none';
                 resultCard.style.display = 'block';
 
@@ -915,64 +966,11 @@
             }
         }
 
-        // Calculates authentic logistic progression timestamps with business-hour constraints
-        function calculateLogisticSchedule(order, isSimulated) {
-            const createdAtMs = order.createdAt ? Number(order.createdAt) : (Date.now() - 40 * 60 * 1000);
-            const realElapsedHours = (Date.now() - createdAtMs) / (1000 * 60 * 60);
-            const isOver48h = isSimulated || realElapsedHours >= 48;
-
-            // Stable deterministic seed from order tracking code or CPF
-            const seedStr = (order.trackingCode || order.cpf || '842918').replace(/\D/g, '') || '842918';
-            const seed = parseInt(seedStr.slice(-4), 10) || 1234;
-
-            // If isOver48h: virtual base time is ~50h ago so Step 6 lands as today
-            // If < 48h: base is real order creation timestamp
-            const baseMs = isOver48h 
-                ? (Date.now() - 50 * 3600 * 1000) 
-                : createdAtMs;
-
-            const d1 = new Date(baseMs);
-
-            // Step 2: 2.5 hours after Step 1
-            const d2 = new Date(d1.getTime() + (2 + (seed % 2)) * 3600 * 1000 + (seed % 40) * 60 * 1000);
-
-            // Step 3: Pedido Postado -> ESTRITAMENTE ENTRE 08:00 e 17:00!
-            const d3 = new Date(d2.getTime() + 4 * 3600 * 1000);
-            const postHour = 8 + (seed % 9); // Always: 8, 9, 10, 11, 12, 13, 14, 15, or 16 (never 17+)
-            const postMin = 10 + (seed % 45); // Always: 10 to 54 min
-            d3.setHours(postHour, postMin, 0, 0);
-
-            // Ensure chronological progression
-            if (d3.getTime() <= d2.getTime()) {
-                d3.setDate(d3.getDate() + 1);
+        function setSimulatedHours(h) {
+            simulatedHours = h;
+            if (currentOrder) {
+                renderOrderDetails(currentOrder);
             }
-            if (d3.getDay() === 0) d3.setDate(d3.getDate() + 1); // Avoid Sunday
-
-            // Step 4: CD de São Paulo (~12h after post)
-            const d4 = new Date(d3.getTime() + (11 + (seed % 5)) * 3600 * 1000);
-
-            // Step 5: Fiscalização aduaneira (~10h after Step 4)
-            const d5 = new Date(d4.getTime() + (8 + (seed % 4)) * 3600 * 1000);
-
-            // Step 6: Conclusão da Aduana / Taxa (Exatamente 48 horas após criação do pedido)
-            const d6 = new Date(d1.getTime() + 48 * 3600 * 1000);
-
-            const fmt = (d) => {
-                const h = String(d.getHours()).padStart(2, '0');
-                const m = String(d.getMinutes()).padStart(2, '0');
-                return `${d.toLocaleDateString('pt-BR')} às ${h}:${m}`;
-            };
-
-            return {
-                isOver48h,
-                realElapsedHours,
-                step1: fmt(d1),
-                step2: fmt(d2),
-                step3: fmt(d3),
-                step4: fmt(d4),
-                step5: fmt(d5),
-                step6: fmt(d6)
-            };
         }
 
         function renderOrderDetails(order) {
@@ -985,155 +983,239 @@
             document.getElementById('track-item-text').textContent = `Costela de Adão (Muda ${order.size || 'M'})`;
             document.getElementById('track-address-text').textContent = `${city}/${state}`;
 
-            // Calculate schedule
-            const schedule = calculateLogisticSchedule(order, isSimulating48h);
+            // Calculate Effective Progression Time
+            const createdAtMs = order.createdAt ? Number(order.createdAt) : (Date.now() - 20 * 60 * 1000);
+            const realElapsedHours = Math.max(0, (Date.now() - createdAtMs) / (1000 * 60 * 60));
+            const effectiveHours = (simulatedHours !== null) ? simulatedHours : realElapsedHours;
 
-            // Set timestamps for steps 1-5
-            document.getElementById('date-step-1').textContent = schedule.step1;
-            document.getElementById('date-step-2').textContent = schedule.step2;
-            document.getElementById('date-step-3').textContent = schedule.step3;
-            document.getElementById('date-step-4').textContent = schedule.step4;
-            document.getElementById('date-step-5').textContent = schedule.step5;
+            // Anchor base time for consistent progressive dates
+            const baseMs = (simulatedHours !== null)
+                ? (Date.now() - (effectiveHours * 3600 * 1000))
+                : createdAtMs;
 
-            // Step 8: Regional Logistical Center based on Location
-            document.getElementById('title-step-8').textContent = `Seu pedido chegou ao centro logístico de ${city} / ${state}`;
-            document.getElementById('desc-step-8').textContent = `Carga em transferência para o Centro de Distribuição Regional de ${city}/${state}.`;
+            const seedStr = (order.trackingCode || order.cpf || '842918').replace(/\D/g, '') || '842918';
+            const seed = parseInt(seedStr.slice(-4), 10) || 1234;
 
-            // Step 9: Final Address Delivery
-            const fullAddr = order.address || `${city}/${state}`;
-            document.getElementById('desc-step-9').textContent = `O entregador seguirá para entrega no endereço: ${fullAddr}.`;
+            // Milestones: 0h (Criado), 8h (Preparo), 18h (Postado 8h-17h), 30h (CD SP), 40h (Aduana), 48h (Taxa)
+            const d1 = new Date(baseMs);
+            const d2 = new Date(d1.getTime() + 8 * 3600 * 1000);
 
-            // Update Simulation Bar UI
+            // Step 3 (18h) -> ESTRITAMENTE ENTRE 08:00 e 17:00!
+            const d3 = new Date(d1.getTime() + 18 * 3600 * 1000);
+            const postHour = 8 + (seed % 9); // strictly 8, 9, 10, 11, 12, 13, 14, 15, or 16 (never 17+)
+            const postMin = 10 + (seed % 45); // strictly 10 to 54 min
+            d3.setHours(postHour, postMin, 0, 0);
+            if (d3.getTime() <= d2.getTime()) d3.setDate(d3.getDate() + 1);
+            if (d3.getDay() === 0) d3.setDate(d3.getDate() + 1);
+
+            const d4 = new Date(d1.getTime() + 30 * 3600 * 1000);
+            const d5 = new Date(d1.getTime() + 40 * 3600 * 1000);
+            const d6 = new Date(d1.getTime() + 48 * 3600 * 1000);
+
+            const fmt = (d) => {
+                const h = String(d.getHours()).padStart(2, '0');
+                const m = String(d.getMinutes()).padStart(2, '0');
+                return `${d.toLocaleDateString('pt-BR')} às ${h}:${m}`;
+            };
+
+            // Update Simulation Panel Active Classes
+            const milestoneBtns = [0, 8, 18, 30, 40, 48];
+            milestoneBtns.forEach(m => {
+                const btn = document.getElementById(`m-btn-${m}`);
+                if (btn) btn.classList.toggle('active', simulatedHours === m);
+            });
+            const btnReal = document.getElementById('m-btn-real');
+            if (btnReal) btnReal.classList.toggle('active', simulatedHours === null);
+
+            // Update Simulation Label
             const simTimeLabel = document.getElementById('sim-time-label');
-            const btnSim = document.getElementById('btn-sim-toggle');
-            if (simTimeLabel && btnSim) {
+            if (simTimeLabel) {
                 if (order.taxPaid) {
-                    simTimeLabel.innerHTML = `<span style="color: #059669; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Taxa Paga • Rota Final Ativa</span>`;
-                    btnSim.style.display = 'none';
-                } else if (schedule.isOver48h) {
-                    simTimeLabel.innerHTML = `<span style="color: #d97706; font-weight: 700;"><i class="fa-solid fa-triangle-exclamation"></i> +48h Decorridas (2 dias) • Taxa de R$ 12 Ativa</span>`;
-                    btnSim.style.display = 'inline-flex';
-                    btnSim.innerHTML = `<i class="fa-solid fa-backward"></i> <span>Ver Tempo Real (&lt; 48h - Ocultar Taxa)</span>`;
+                    simTimeLabel.innerHTML = `<span style="color: #059669; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Taxa Paga (R$ 12) • Em Rota Final (10 dias)</span>`;
+                } else if (simulatedHours !== null) {
+                    simTimeLabel.innerHTML = `<span style="color: #d97706; font-weight: 700;">Simulado: <strong>${simulatedHours}h decorridas</strong></span>`;
                 } else {
-                    simTimeLabel.innerHTML = `<span style="color: #2563eb; font-weight: 700;"><i class="fa-solid fa-clock"></i> &lt; 48h Decorridas • Em Triagem (Taxa Oculta)</span>`;
-                    btnSim.style.display = 'inline-flex';
-                    btnSim.innerHTML = `<i class="fa-solid fa-forward"></i> <span>Avançar +48h (Ver Taxa R$12)</span>`;
+                    const h = Math.floor(realElapsedHours);
+                    const m = Math.floor((realElapsedHours % 1) * 60);
+                    simTimeLabel.innerHTML = `<span style="color: #2563eb; font-weight: 700;">Tempo Real: <strong>${h}h ${m}m decorridos</strong></span>`;
                 }
             }
 
-            // Apply paid vs unpaid vs under-48h state
-            updatePaidUI(order.taxPaid, schedule.isOver48h, schedule.step6);
+            // Step 1: Pedido Criado (0h)
+            document.getElementById('date-step-1').textContent = fmt(d1);
 
-            // Generate Woovi PIX if over 48h and not yet paid
-            if (schedule.isOver48h && !order.taxPaid) {
-                generateWooviPix(order);
+            // Step 2: Preparando para envio (8h)
+            const step2 = document.getElementById('step-node-2');
+            const dot2 = document.getElementById('dot-step-2');
+            const title2 = document.getElementById('title-step-2');
+            const desc2 = document.getElementById('desc-step-2');
+            const date2 = document.getElementById('date-step-2');
+            if (effectiveHours < 8) {
+                step2.className = 'step-item in-progress';
+                dot2.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #2563eb;"></i>';
+                title2.textContent = 'Seu pedido está sendo preparado para envio';
+                desc2.textContent = 'Muda selecionada na estufa e sendo acondicionada em embalagem térmica com raízes protegidas.';
+                date2.textContent = 'Em andamento na estufa de cultivo';
+            } else {
+                step2.className = 'step-item completed';
+                dot2.innerHTML = '<i class="fa-solid fa-check"></i>';
+                title2.textContent = 'Seu pedido foi preparado para envio';
+                desc2.textContent = 'Muda selecionada na estufa e acondicionada em embalagem com raízes protegidas.';
+                date2.textContent = fmt(d2);
             }
-        }
 
-        function toggleSimulate48h() {
-            if (!currentOrder) return;
-            isSimulating48h = !isSimulating48h;
-            renderOrderDetails(currentOrder);
-        }
+            // Step 3: Pedido Postado (18h - Horário Comercial 08:00 às 17:00)
+            const step3 = document.getElementById('step-node-3');
+            const dot3 = document.getElementById('dot-step-3');
+            const title3 = document.getElementById('title-step-3');
+            const desc3 = document.getElementById('desc-step-3');
+            const date3 = document.getElementById('date-step-3');
+            if (effectiveHours < 8) {
+                step3.className = 'step-item locked';
+                dot3.innerHTML = '<i class="fa-solid fa-lock"></i>';
+                title3.textContent = 'Pedido postado';
+                desc3.textContent = 'Aguardando finalização do acondicionamento da muda na estufa.';
+                date3.textContent = 'Aguardando preparo da muda';
+            } else if (effectiveHours < 18) {
+                step3.className = 'step-item in-progress';
+                dot3.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #2563eb;"></i>';
+                title3.textContent = 'Aguardando coleta e postagem';
+                desc3.textContent = 'Muda embalada. Aguardando a rota de coleta dos Correios / transportadora no horário comercial.';
+                date3.textContent = 'Coleta comercial programada (08:00 às 17:00)';
+            } else {
+                step3.className = 'step-item completed';
+                dot3.innerHTML = '<i class="fa-solid fa-check"></i>';
+                title3.textContent = 'Pedido postado';
+                desc3.textContent = 'Objeto postado na unidade emissora dentro do horário comercial com código de rastreamento ativo.';
+                date3.textContent = fmt(d3);
+            }
 
-        function updatePaidUI(isPaid, isOver48h, step6DateStr) {
-            const statusPill = document.getElementById('track-status-pill');
+            // Step 4: Centro Logístico de São Paulo (30h)
+            const step4 = document.getElementById('step-node-4');
+            const dot4 = document.getElementById('dot-step-4');
+            const title4 = document.getElementById('title-step-4');
+            const desc4 = document.getElementById('desc-step-4');
+            const date4 = document.getElementById('date-step-4');
+            if (effectiveHours < 18) {
+                step4.className = 'step-item locked';
+                dot4.innerHTML = '<i class="fa-solid fa-lock"></i>';
+                title4.textContent = 'Chegada ao centro logístico de São Paulo';
+                desc4.textContent = 'Aguardando postagem do objeto na unidade emissora.';
+                date4.textContent = 'Aguardando postagem';
+            } else if (effectiveHours < 30) {
+                step4.className = 'step-item in-progress';
+                dot4.innerHTML = '<i class="fa-solid fa-truck" style="color: #2563eb;"></i>';
+                title4.textContent = 'Em transferência para centro logístico de SP';
+                desc4.textContent = 'Carga viva em transferência rodoviária interestadual para o Centro de Distribuição Central de São Paulo/SP.';
+                date4.textContent = 'Em trânsito rodoviário interestadual';
+            } else {
+                step4.className = 'step-item completed';
+                dot4.innerHTML = '<i class="fa-solid fa-check"></i>';
+                title4.textContent = 'Seu pedido chegou ao centro logístico de São Paulo';
+                desc4.textContent = 'Em triagem no Centro de Distribuição Central de São Paulo/SP.';
+                date4.textContent = fmt(d4);
+            }
+
+            // Step 5: Encaminhado para fiscalização aduaneira (40h)
+            const step5 = document.getElementById('step-node-5');
+            const dot5 = document.getElementById('dot-step-5');
+            const title5 = document.getElementById('title-step-5');
+            const desc5 = document.getElementById('desc-step-5');
+            const date5 = document.getElementById('date-step-5');
+            if (effectiveHours < 30) {
+                step5.className = 'step-item locked';
+                dot5.innerHTML = '<i class="fa-solid fa-lock"></i>';
+                title5.textContent = 'Encaminhado para fiscalização aduaneira';
+                desc5.textContent = 'Aguardando triagem no Centro de Distribuição Central de São Paulo.';
+                date5.textContent = 'Aguardando triagem em SP';
+            } else if (effectiveHours < 40) {
+                step5.className = 'step-item in-progress';
+                dot5.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #2563eb;"></i>';
+                title5.textContent = 'Em transferência para posto aduaneiro';
+                desc5.textContent = 'Carga encaminhada para inspeção fitossanitária e conferência interestadual.';
+                date5.textContent = 'Em trânsito para posto fiscal';
+            } else {
+                step5.className = 'step-item completed';
+                dot5.innerHTML = '<i class="fa-solid fa-check"></i>';
+                title5.textContent = 'Encaminhado para fiscalização aduaneira';
+                desc5.textContent = 'Guia fiscal de transporte e desembaraço de carga viva emitida.';
+                date5.textContent = fmt(d5);
+            }
+
+            // Step 6: Aguardando Pagamento (48h - Taxa de R$ 12,00)
+            const step6 = document.getElementById('step-node-6');
+            const dot6 = document.getElementById('dot-step-6');
+            const title6 = document.getElementById('title-step-6');
+            const desc6 = document.getElementById('desc-step-6');
+            const date6 = document.getElementById('date-step-6');
             const pixBox = document.getElementById('pix-payment-box');
             const taxPaidBanner = document.getElementById('tax-paid-banner');
 
-            const step6 = document.getElementById('step-node-6');
-            const dotStep6 = document.getElementById('dot-step-6');
-            const titleStep6 = document.getElementById('title-step-6');
-            const descStep6 = document.getElementById('desc-step-6');
-            const dateStep6 = document.getElementById('date-step-6');
+            if (order.taxPaid) {
+                step6.className = 'step-item completed';
+                dot6.innerHTML = '<i class="fa-solid fa-check"></i>';
+                title6.textContent = 'Fiscalização aduaneira finalizada';
+                desc6.textContent = 'Guia aduaneira de transporte de carga viva liquidada e liberada com sucesso.';
+                date6.textContent = fmt(d6);
+                pixBox.style.display = 'none';
+                taxPaidBanner.style.display = 'flex';
+            } else if (effectiveHours < 40) {
+                step6.className = 'step-item locked';
+                dot6.innerHTML = '<i class="fa-solid fa-lock"></i>';
+                title6.textContent = 'Fiscalização aduaneira e liberação fiscal';
+                desc6.textContent = 'Aguardando entrada da remessa no posto fiscal de controle fitossanitário.';
+                date6.textContent = 'Aguardando entrada aduaneira';
+                pixBox.style.display = 'none';
+                taxPaidBanner.style.display = 'none';
+            } else if (effectiveHours < 48) {
+                step6.className = 'step-item in-progress';
+                dot6.innerHTML = '<i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i>';
+                title6.textContent = 'Fiscalização aduaneira e triagem fiscal';
+                desc6.textContent = 'Remessa em conferência fitossanitária e controle de transporte de carga viva. Liberação estimada em até 48 horas da criação do pedido.';
+                date6.textContent = 'Em triagem fiscal (prazo: até 48h)';
+                pixBox.style.display = 'none';
+                taxPaidBanner.style.display = 'none';
+            } else {
+                // >= 48 hours AND unpaid -> Fee is ACTIVE!
+                step6.className = 'step-item current-warning';
+                dot6.innerHTML = '<i class="fa-solid fa-exclamation"></i>';
+                title6.textContent = 'Aguardando pagamento';
+                desc6.textContent = 'A fiscalização aduaneira concluiu a triagem e emitiu a taxa postal de liberação de carga viva (R$ 12,00). O envio está retido aguardando liquidação.';
+                date6.textContent = `${fmt(d6)} (após 48h de triagem)`;
+                pixBox.style.display = 'block';
+                taxPaidBanner.style.display = 'none';
+                generateWooviPix(order);
+            }
 
+            // Step 7: Taxa Paga
             const step7 = document.getElementById('step-node-7');
             const step8 = document.getElementById('step-node-8');
             const step9 = document.getElementById('step-node-9');
 
+            // Step 8 & 9 text
+            document.getElementById('title-step-8').textContent = `Seu pedido chegou ao centro logístico de ${city} / ${state}`;
+            document.getElementById('desc-step-8').textContent = `Carga em transferência para o Centro de Distribuição Regional de ${city}/${state}.`;
+            const fullAddr = order.address || `${city}/${state}`;
+            document.getElementById('desc-step-9').textContent = `O entregador seguirá para entrega no endereço: ${fullAddr}.`;
+
             const now = new Date();
 
-            if (isPaid) {
-                // UI: Paid & In Route
-                statusPill.className = 'status-pill delivered';
-                statusPill.innerHTML = '<i class="fa-solid fa-truck-fast"></i> <span>Liberado • Em Trânsito (Prazo: 10 dias)</span>';
-                
-                pixBox.style.display = 'none';
-                taxPaidBanner.style.display = 'flex';
-                taxPaidBanner.innerHTML = `
-                    <i class="fa-solid fa-circle-check" style="font-size: 24px;"></i>
-                    <div>
-                        Taxa de Liberação Confirmada via PIX!<br>
-                        <span style="font-size: 0.76rem; font-weight: 500;">Remessa desembaraçada. Atualização de entrega programada para o prazo de 10 dias corridos.</span>
-                    </div>
-                `;
-
-                // Step 6: Aguardando Pagamento -> Concluído
-                step6.className = 'step-item completed';
-                dotStep6.innerHTML = '<i class="fa-solid fa-check"></i>';
-                titleStep6.textContent = 'Fiscalização aduaneira finalizada';
-                descStep6.textContent = 'Guia aduaneira de transporte de carga viva liquidada e liberada com sucesso.';
-                dateStep6.textContent = step6DateStr || 'Concluído';
-
-                // Step 7: Taxa Paga
+            if (order.taxPaid) {
                 step7.className = 'step-item completed';
                 step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
                 document.getElementById('date-step-7').textContent = `Confirmado via PIX em ${now.toLocaleDateString('pt-BR')} às ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-                // Calculate 5 days and 10 days intervals after payment
                 const d5 = new Date(now.getTime() + 5 * 24 * 3600 * 1000);
                 const d10 = new Date(now.getTime() + 10 * 24 * 3600 * 1000);
 
-                // Step 8: Centro logistico local (após 5 dias do pagamento)
                 step8.className = 'step-item completed';
                 step8.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
                 document.getElementById('date-step-8').textContent = `Previsão de chegada no CD: até ${d5.toLocaleDateString('pt-BR')} (em 5 dias)`;
 
-                // Step 9: Em rota de entrega (Prazo final de 10 dias)
                 step9.className = 'step-item current-warning';
                 step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-truck"></i>';
                 document.getElementById('date-step-9').innerHTML = `<strong>Previsão de entrega no endereço: ${d10.toLocaleDateString('pt-BR')} (Prazo de 10 dias corridos)</strong>`;
-
-            } else if (!isOver48h) {
-                // UI: Less than 48 hours (< 2 days) -> In transit, NO PAYMENT BOX SHOWN!
-                statusPill.className = 'status-pill in-transit';
-                statusPill.innerHTML = '<i class="fa-solid fa-shield-halved"></i> <span>Em Trânsito • Fiscalização Aduaneira</span>';
-
-                pixBox.style.display = 'none';
-                taxPaidBanner.style.display = 'none';
-
-                step6.className = 'step-item in-progress';
-                dotStep6.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #2563eb;"></i>';
-                titleStep6.textContent = 'Fiscalização aduaneira e triagem fitossanitária';
-                descStep6.textContent = 'Remessa em conferência fitossanitária e controle de transporte de carga viva. Liberação estimada em até 48 horas da postagem.';
-                dateStep6.textContent = 'Em triagem fiscal (prazo: até 48h)';
-
-                step7.className = 'step-item locked';
-                step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-7').textContent = 'Pendente de conclusão da triagem aduaneira';
-
-                step8.className = 'step-item locked';
-                step8.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-8').textContent = 'Aguardando liberação fiscal';
-
-                step9.className = 'step-item locked';
-                step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-9').textContent = 'Prazo de 10 dias iniciará após liberação';
-
             } else {
-                // UI: Over 48 hours (>= 2 days) AND unpaid -> Waiting payment, PIX BOX SHOWN!
-                statusPill.className = 'status-pill waiting';
-                statusPill.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> <span>Aguardando Pagamento da Taxa</span>';
-
-                pixBox.style.display = 'block';
-                taxPaidBanner.style.display = 'none';
-
-                step6.className = 'step-item current-warning';
-                dotStep6.innerHTML = '<i class="fa-solid fa-exclamation"></i>';
-                titleStep6.textContent = 'Aguardando pagamento';
-                descStep6.textContent = 'A fiscalização aduaneira concluiu a triagem e emitiu a taxa postal de liberação de carga viva (R$ 12,00). O envio está retido aguardando liquidação.';
-                dateStep6.textContent = `${step6DateStr} (após 48h de triagem)`;
-
                 step7.className = 'step-item locked';
                 step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
                 document.getElementById('date-step-7').textContent = 'Pendente de pagamento da guia de liberação';
@@ -1145,6 +1227,31 @@
                 step9.className = 'step-item locked';
                 step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
                 document.getElementById('date-step-9').textContent = 'Prazo de 10 dias iniciará após pagamento da taxa';
+            }
+
+            // Status Pill in Card Header
+            const statusPill = document.getElementById('track-status-pill');
+            if (order.taxPaid) {
+                statusPill.className = 'status-pill delivered';
+                statusPill.innerHTML = '<i class="fa-solid fa-truck-fast"></i> <span>Liberado • Em Trânsito (Prazo: 10 dias)</span>';
+            } else if (effectiveHours < 8) {
+                statusPill.className = 'status-pill in-transit';
+                statusPill.innerHTML = '<i class="fa-solid fa-seedling"></i> <span>Pedido Criado • Em Preparação na Estufa</span>';
+            } else if (effectiveHours < 18) {
+                statusPill.className = 'status-pill in-transit';
+                statusPill.innerHTML = '<i class="fa-solid fa-box"></i> <span>Em Preparo • Aguardando Coleta Comercial</span>';
+            } else if (effectiveHours < 30) {
+                statusPill.className = 'status-pill in-transit';
+                statusPill.innerHTML = '<i class="fa-solid fa-truck"></i> <span>Pedido Postado • Em Transferência</span>';
+            } else if (effectiveHours < 40) {
+                statusPill.className = 'status-pill in-transit';
+                statusPill.innerHTML = '<i class="fa-solid fa-warehouse"></i> <span>Em Triagem • CD de São Paulo</span>';
+            } else if (effectiveHours < 48) {
+                statusPill.className = 'status-pill in-transit';
+                statusPill.innerHTML = '<i class="fa-solid fa-shield-halved"></i> <span>Em Fiscalização Aduaneira (Até 48h)</span>';
+            } else {
+                statusPill.className = 'status-pill waiting';
+                statusPill.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> <span>Aguardando Pagamento da Taxa</span>';
             }
         }
 
