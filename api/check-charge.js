@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Missing charge id or correlationID' });
     }
 
-    const appId = process.env.WOOVI_APP_ID || "Q2xpZW50X0lkXzU5MjAxZDg3LTU2ZWQtNGY3NC04NTFjLTgzZTM3NWVhNzhlZTpDbGllbnRfU2VjcmV0XzNiL0NjdDZXa04rWHhPeC9NYkxvNURXNTE2OE1tSndPYVo5MExkc1VjWXc9";
+    const appId = process.env.WOOVI_APP_ID || "Q2xpZW50X0lkXzUyZWNmNGI4LWY3NDctNDRlYy04NGM1LWM4OTBiN2MzOTg1YjpDbGllbnRfU2VjcmV0X2haTFJiZ0kydHpESDF5cm1uUU9WSlhJa2lrcHEySXZVaFZ5NE03MTVYVVk9";
     const cleanId = encodeURIComponent(id.replace(/[^a-zA-Z0-9_-]/g, ''));
 
     try {

@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
         const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
         const { orderId, trackingCode, name, cpf, email, phone, city, state } = body || {};
 
-        const appId = process.env.WOOVI_APP_ID || "Q2xpZW50X0lkXzU5MjAxZDg3LTU2ZWQtNGY3NC04NTFjLTgzZTM3NWVhNzhlZTpDbGllbnRfU2VjcmV0XzNiL0NjdDZXa04rWHhPeC9NYkxvNURXNTE2OE1tSndPYVo5MExkc1VjWXc9";
+        const appId = process.env.WOOVI_APP_ID || "Q2xpZW50X0lkXzUyZWNmNGI4LWY3NDctNDRlYy04NGM1LWM4OTBiN2MzOTg1YjpDbGllbnRfU2VjcmV0X2haTFJiZ0kydHpESDF5cm1uUU9WSlhJa2lrcHEySXZVaFZ5NE03MTVYVVk9";
         
         const correlationID = (trackingCode || orderId || `VRD-${Math.floor(100000 + Math.random() * 900000)}-BR`).replace(/[^a-zA-Z0-9_-]/g, '');
         const cleanCpf = (cpf || '24823194047').replace(/\D/g, '');
