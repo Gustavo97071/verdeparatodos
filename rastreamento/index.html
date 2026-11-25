@@ -861,25 +861,27 @@
             document.getElementById('track-address-text').textContent = `${city}/${state}`;
 
             // Set timestamps
+            // 48h Interval for authentic logistic progression (Steps 1 to 5)
             const now = new Date();
             const formatTime = (hDelta) => {
                 const d = new Date(now.getTime() - hDelta * 3600 * 1000);
-                return `${d.toLocaleDateString('pt-BR')} às ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+                const dayLabel = hDelta >= 40 ? ' (2 dias atrás)' : (hDelta >= 20 ? ' (Ontem)' : ' (Hoje)');
+                return `${d.toLocaleDateString('pt-BR')} às ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}${dayLabel}`;
             };
 
-            document.getElementById('date-step-1').textContent = formatTime(18);
-            document.getElementById('date-step-2').textContent = formatTime(14);
-            document.getElementById('date-step-3').textContent = formatTime(10);
-            document.getElementById('date-step-4').textContent = formatTime(5);
-            document.getElementById('date-step-5').textContent = formatTime(2);
+            document.getElementById('date-step-1').textContent = formatTime(48);
+            document.getElementById('date-step-2').textContent = formatTime(36);
+            document.getElementById('date-step-3').textContent = formatTime(24);
+            document.getElementById('date-step-4').textContent = formatTime(12);
+            document.getElementById('date-step-5').textContent = formatTime(3);
 
             // Step 8: Regional Logistical Center based on Location
             document.getElementById('title-step-8').textContent = `Seu pedido chegou ao centro logístico de ${city} / ${state}`;
-            document.getElementById('desc-step-8').textContent = `Carga descarregada no Centro de Distribuição Regional de ${city}/${state}.`;
+            document.getElementById('desc-step-8').textContent = `Carga em transferência para o Centro de Distribuição Regional de ${city}/${state}.`;
 
             // Step 9: Final Address Delivery
             const fullAddr = order.address || `${city}/${state}`;
-            document.getElementById('desc-step-9').textContent = `O entregador está em trânsito com sua muda para: ${fullAddr}.`;
+            document.getElementById('desc-step-9').textContent = `O entregador seguirá para entrega no endereço: ${fullAddr}.`;
 
             // Apply paid vs unpaid state
             updatePaidUI(order.taxPaid);
@@ -896,32 +898,45 @@
             const step8 = document.getElementById('step-node-8');
             const step9 = document.getElementById('step-node-9');
 
+            const now = new Date();
+
             if (isPaid) {
                 // UI: Paid & In Route
                 statusPill.className = 'status-pill delivered';
-                statusPill.innerHTML = '<i class="fa-solid fa-truck-fast"></i> <span>Em Rota de Entrega</span>';
+                statusPill.innerHTML = '<i class="fa-solid fa-truck-fast"></i> <span>Liberado • Em Trânsito (Prazo: 10 dias)</span>';
                 
                 pixBox.style.display = 'none';
                 taxPaidBanner.style.display = 'flex';
+                taxPaidBanner.innerHTML = `
+                    <i class="fa-solid fa-circle-check" style="font-size: 24px;"></i>
+                    <div>
+                        Taxa de Liberação Confirmada via PIX!<br>
+                        <span style="font-size: 0.76rem; font-weight: 500;">Remessa desembaraçada. Atualização de entrega programada para o prazo de 10 dias úteis.</span>
+                    </div>
+                `;
 
-                // Step 6 completed
+                // Step 6: Aguardando Pagamento -> Concluído
                 step6.className = 'step-item completed';
                 step6.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
 
                 // Step 7: Taxa Paga
                 step7.className = 'step-item completed';
                 step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
-                document.getElementById('date-step-7').textContent = 'Confirmado via PIX';
+                document.getElementById('date-step-7').textContent = `Confirmado via PIX em ${now.toLocaleDateString('pt-BR')} às ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-                // Step 8: Centro logistico local
+                // Calculate 5 days and 10 days intervals after payment
+                const d5 = new Date(now.getTime() + 5 * 24 * 3600 * 1000);
+                const d10 = new Date(now.getTime() + 10 * 24 * 3600 * 1000);
+
+                // Step 8: Centro logistico local (após 5 dias do pagamento)
                 step8.className = 'step-item completed';
                 step8.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
-                document.getElementById('date-step-8').textContent = 'Triagem regional concluída';
+                document.getElementById('date-step-8').textContent = `Previsão de chegada no CD: até ${d5.toLocaleDateString('pt-BR')} (em 5 dias)`;
 
-                // Step 9: Em rota de entrega
+                // Step 9: Em rota de entrega (Prazo final de 10 dias)
                 step9.className = 'step-item current-warning';
                 step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-truck"></i>';
-                document.getElementById('date-step-9').textContent = 'Previsão de entrega: Hoje até 18h';
+                document.getElementById('date-step-9').innerHTML = `<strong>Previsão de entrega no endereço: ${d10.toLocaleDateString('pt-BR')} (Prazo de 10 dias corridos)</strong>`;
 
             } else {
                 // UI: Waiting payment
@@ -936,15 +951,15 @@
 
                 step7.className = 'step-item locked';
                 step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-7').textContent = 'Pendente de pagamento';
+                document.getElementById('date-step-7').textContent = 'Pendente de pagamento da guia de liberação';
 
                 step8.className = 'step-item locked';
                 step8.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-8').textContent = 'Aguardando liberação';
+                document.getElementById('date-step-8').textContent = 'Bloqueado na aduana (aguarda taxa)';
 
                 step9.className = 'step-item locked';
                 step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-9').textContent = 'Aguardando rota';
+                document.getElementById('date-step-9').textContent = 'Prazo de 10 dias iniciará após pagamento da taxa';
             }
         }
 
