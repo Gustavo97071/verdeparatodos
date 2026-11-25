@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rastreamento Oficial - Plantas Para Todos</title>
+    <title>Rastreamento Oficial - Verde Para Todos</title>
     <meta name="description" content="Acompanhe o status e a liberação de envio da sua muda de Costela de Adão em tempo real.">
     
     <!-- Google Fonts -->
@@ -604,7 +604,7 @@
         <header class="app-header">
             <a href="/" class="header-logo" style="text-decoration: none; color: inherit;">
                 <span class="logo-cross-symbol"><i class="fa-solid fa-leaf"></i></span>
-                <span class="logo-text">Plantas<span class="logo-light">ParaTodos</span></span>
+                <span class="logo-text">Verde<span class="logo-light">ParaTodos</span></span>
             </a>
             <div class="header-actions">
                 <a href="/" class="icon-btn" aria-label="Início" title="Voltar ao início" style="text-decoration: none;">
@@ -626,7 +626,7 @@
                 <label for="tracking-query-input" class="search-box-label">Consultar Pedido:</label>
                 <form id="tracking-search-form" onsubmit="handleTrackingSearch(event)">
                     <div class="search-form-row">
-                        <input type="text" id="tracking-query-input" class="search-input-field" placeholder="Digite seu CPF ou PLT-..." required autocomplete="off">
+                        <input type="text" id="tracking-query-input" class="search-input-field" placeholder="Digite seu CPF ou VRD-..." required autocomplete="off">
                         <button type="submit" class="search-submit-btn">
                             <i class="fa-solid fa-magnifying-glass"></i> Consultar
                         </button>
@@ -651,7 +651,7 @@
                     <span class="status-pill waiting" id="track-status-pill">
                         <i class="fa-solid fa-hourglass-half"></i> <span id="track-status-text">Aguardando Pagamento da Taxa</span>
                     </span>
-                    <span class="tracking-code-pill" id="track-code-text">#PLT-842918-BR</span>
+                    <span class="tracking-code-pill" id="track-code-text">#VRD-842918-BR</span>
                 </div>
 
                 <div class="info-summary-grid">
@@ -862,7 +862,7 @@
             const input = document.getElementById('tracking-query-input');
             if (input) {
                 input.addEventListener('input', (e) => {
-                    if (/^\d+$/.test(e.target.value.replace(/\D/g, '')) && !e.target.value.toUpperCase().includes('PLT') && !e.target.value.toUpperCase().includes('PT')) {
+                    if (/^\d+$/.test(e.target.value.replace(/\D/g, '')) && !e.target.value.toUpperCase().includes('VRD') && !e.target.value.toUpperCase().includes('PLT') && !e.target.value.toUpperCase().includes('PT')) {
                         formatCPFInput(e);
                     }
                 });
@@ -935,10 +935,10 @@
             }
 
             // 3. Realistic fallback for testing if 11 digits or code
-            if (!found && (cleanDigits.length === 11 || cleanLower.includes('plt-') || cleanLower.includes('pt-'))) {
+            if (!found && (cleanDigits.length === 11 || cleanLower.includes('vrd-') || cleanLower.includes('plt-') || cleanLower.includes('pt-'))) {
                 found = {
-                    id: '#PT-' + (cleanDigits.slice(0, 6) || '842918') + '-BR',
-                    trackingCode: cleanLower.includes('plt-') ? query.toUpperCase() : 'PLT-842918-BR',
+                    id: '#VRD-' + (cleanDigits.slice(0, 6) || '842918') + '-BR',
+                    trackingCode: (cleanLower.includes('vrd-') || cleanLower.includes('plt-')) ? query.toUpperCase() : 'VRD-842918-BR',
                     name: 'Cliente Cadastrado',
                     cpf: cleanDigits.length === 11 ? query : '000.***.***-00',
                     city: 'Campinas',

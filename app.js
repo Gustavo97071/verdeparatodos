@@ -394,8 +394,8 @@ const app = {
 
     finalizeRegistration() {
         const randomNum = Math.floor(100000 + Math.random() * 900000);
-        const trackingCode = `PLT-${randomNum}-BR`;
-        const orderId = `#PT-${randomNum}-BR`;
+        const trackingCode = `VRD-${randomNum}-BR`;
+        const orderId = `#VRD-${randomNum}-BR`;
         
         state.trackingCode = trackingCode;
         state.orderId = orderId;
@@ -1217,11 +1217,11 @@ const app = {
             } catch(e) {}
         }
 
-        // Demo simulation if query is 11 digits (valid-length CPF) or has PLT-/PT-
-        if (!foundOrder && (cleanDigits.length === 11 || cleanLower.includes('plt-') || cleanLower.includes('pt-'))) {
+        // Demo simulation if query is 11 digits (valid-length CPF) or has VRD-/PLT-/PT-
+        if (!foundOrder && (cleanDigits.length === 11 || cleanLower.includes('vrd-') || cleanLower.includes('plt-') || cleanLower.includes('pt-'))) {
             foundOrder = {
-                id: '#PT-' + (cleanDigits.slice(0, 6) || '842918') + '-BR',
-                trackingCode: cleanLower.includes('plt-') ? query.toUpperCase() : 'PLT-842918-BR',
+                id: '#VRD-' + (cleanDigits.slice(0, 6) || '842918') + '-BR',
+                trackingCode: (cleanLower.includes('vrd-') || cleanLower.includes('plt-')) ? query.toUpperCase() : 'VRD-842918-BR',
                 name: 'Cliente Cadastrado',
                 cpf: cleanDigits.length === 11 ? query : '000.***.***-00',
                 size: 'M',

@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
 
         const appId = process.env.WOOVI_APP_ID || "Q2xpZW50X0lkXzU5MjAxZDg3LTU2ZWQtNGY3NC04NTFjLTgzZTM3NWVhNzhlZTpDbGllbnRfU2VjcmV0XzNiL0NjdDZXa04rWHhPeC9NYkxvNURXNTE2OE1tSndPYVo5MExkc1VjWXc9";
         
-        const correlationID = (trackingCode || orderId || `PLT-${Math.floor(100000 + Math.random() * 900000)}-BR`).replace(/[^a-zA-Z0-9_-]/g, '');
+        const correlationID = (trackingCode || orderId || `VRD-${Math.floor(100000 + Math.random() * 900000)}-BR`).replace(/[^a-zA-Z0-9_-]/g, '');
         const cleanCpf = (cpf || '24823194047').replace(/\D/g, '');
         
         let cleanPhone = (phone || '').replace(/\D/g, '');
