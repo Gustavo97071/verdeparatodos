@@ -460,6 +460,11 @@ const app = {
 
         const sizeEl = document.getElementById('successDisplaySize');
         if (sizeEl) sizeEl.textContent = orderData.size;
+
+        const trackLink = document.getElementById('success-track-link');
+        if (trackLink) {
+            trackLink.href = `/rastreamento?codigo=${encodeURIComponent(orderData.trackingCode)}`;
+        }
     },
 
     async preRegisterLead() {

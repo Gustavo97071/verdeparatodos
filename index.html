@@ -26,10 +26,10 @@
                     <span class="logo-text">Plantas<span class="logo-light">ParaTodos</span></span>
                 </div>
                 <div class="header-actions">
-                    <button class="header-tracking-btn" onclick="app.openTrackingModal()" title="Rastrear Pedido">
+                    <a href="/rastreamento" class="header-tracking-btn" title="Rastrear Pedido" style="text-decoration: none;">
                         <i class="fa-solid fa-truck-fast"></i>
                         <span>Rastrear</span>
-                    </button>
+                    </a>
                     <button class="icon-btn cart-badge" aria-label="Solicitar Muda" onclick="app.openCheckout()">
                         <i class="fa-solid fa-bag-shopping"></i>
                         <span class="badge-count">1</span>
@@ -574,9 +574,9 @@
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
-                    <button class="buy-button-cta-inline" onclick="app.openTrackingModal(state.trackingCode || state.donor.cpf)" style="margin-top: 10px;">
-                        <i class="fa-solid fa-truck-fast"></i> Consultar Acompanhamento
-                    </button>
+                    <a id="success-track-link" href="/rastreamento" class="buy-button-cta-inline" style="margin-top: 10px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-truck-fast"></i> Acompanhar em /rastreamento
+                    </a>
                     <button class="back-home-btn" onclick="app.resetEcomFlow()">
                         Voltar para a Página Inicial
                     </button>
