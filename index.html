@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Costela de Adão - Doação de Planta Grátis</title>
+    <meta name="description" content="Receba gratuitamente uma muda de Costela de Adão (Monstera deliciosa). Deixe sua casa mais linda e cheia de vida.">
+    
+    <!-- Google Fonts: Outfit for clean modern UI & Cormorant Garamond for elegant headlines -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=1.0.0">
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- 1. LANDING VIEW (PRODUCT PRESENTATION) -->
+        <div id="view-product" class="app-view active">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-logo">
+                    <span class="logo-cross-symbol"><i class="fa-solid fa-leaf"></i></span>
+                    <span class="logo-text">Plantas<span class="logo-light">ParaTodos</span></span>
+                </div>
+                <div class="header-actions">
+                    <button class="header-tracking-btn" onclick="app.openTrackingModal()" title="Rastrear Pedido">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <span>Rastrear</span>
+                    </button>
+                    <button class="icon-btn cart-badge" aria-label="Solicitar Muda" onclick="app.openCheckout()">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <span class="badge-count">1</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="product-content">
+                <!-- Promo Ribbon -->
+                <div class="promo-ribbon">
+                    <span class="ribbon-tag">CAMPANHA MAIS VERDE</span>
+                    <span class="ribbon-text">🌱 Receba Grátis sua Muda • Cadastre-se e Gere seu Rastreio!</span>
+                </div>
+
+                <!-- Product Image Gallery (Carousel) -->
+                <section class="gallery-section">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carousel-track">
+                            <div class="carousel-slide">
+                                <img src="assets/planta_1.jpg" alt="Muda de Costela de Adão - Frente">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="assets/planta_2.jpg" alt="Costela de Adão decorando o ambiente">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="assets/planta_3.jpg" alt="Detalhe da folhagem">
+                            </div>
+                        </div>
+                        <button class="carousel-control prev" id="carousel-prev" aria-label="Foto anterior">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-control next" id="carousel-next" aria-label="Próxima foto">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <!-- Indicator dots -->
+                    <div class="carousel-dots" id="carousel-dots"></div>
+                </section>
+
+                <!-- Product Information -->
+                <section class="info-section">
+                    <div class="rating-info">
+                        <div class="stars">★★★★★</div>
+                        <span class="rating-val">4.9</span>
+                        <span class="rating-count">(3.420 avaliações)</span>
+                    </div>
+                    <h1 class="product-title">Muda de Costela de Adão (Monstera deliciosa)</h1>
+                    <p class="product-subtitle">Sua casa mais linda e cheia de vida! Transforme seu ambiente com esta planta incrível, fácil de cuidar e perfeita para trazer frescor e boas energias para o seu lar.</p>
+                    
+                    <!-- Size Selection Box -->
+                    <div class="size-selection-container">
+                        <span class="size-title"><i class="fa-solid fa-seedling"></i> Selecione o Tamanho da Muda:</span>
+                        <div class="size-buttons">
+                            <button type="button" class="size-btn" onclick="app.selectSize('P', this)">P</button>
+                            <button type="button" class="size-btn active" onclick="app.selectSize('M', this)">M</button>
+                            <button type="button" class="size-btn" onclick="app.selectSize('G', this)">G</button>
+                        </div>
+                    </div>
+
+                    <!-- Pricing Card (100% Free Registration) -->
+                    <div class="price-card">
+                        <div class="price-old">De R$ 79,90</div>
+                        <div class="price-row">
+                            <span class="price-currency">R$</span>
+                            <span class="price-current">0</span>
+                            <span class="price-cents">,00</span>
+                            <span class="price-badge">100% GRÁTIS</span>
+                        </div>
+                        <div class="price-installments">
+                            *Campanha nacional de arborização dos lares
+                        </div>
+                        <div class="price-pix">
+                            ✨ <strong>Muda de presente para você.</strong> Faça seu cadastro completo para receber seu código de rastreamento.
+                        </div>
+                        <div class="shipping-info">
+                            <span class="shipping-icon"><i class="fa-solid fa-truck-fast"></i></span>
+                            <span class="shipping-text">Código de rastreio gerado após cadastro</span>
+                        </div>
+                    </div>
+                    
+                    <button class="buy-button-cta-inline" onclick="app.openCheckout()">
+                        Quero Minha Muda Grátis
+                        <span class="pulse-ring"></span>
+                    </button>
+                </section>
+
+                <!-- Features Grid -->
+                <section class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                        <h3 class="feature-title">Fácil de Cuidar</h3>
+                        <p class="feature-desc">Perfeita para interiores e iniciantes. Requer pouca manutenção e se adapta facilmente.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                        <h3 class="feature-title">Mais Vida</h3>
+                        <p class="feature-desc">Traz frescor, beleza e purifica o ar da sua casa com sua folhagem exuberante.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fa-solid fa-heart"></i></div>
+                        <h3 class="feature-title">Boas Energias</h3>
+                        <p class="feature-desc">Símbolo reconhecido de proteção, prosperidade e bem-estar para os ambientes.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fa-solid fa-box-open"></i></div>
+                        <h3 class="feature-title">Embalagem Segura</h3>
+                        <p class="feature-desc">Enviada com substrato úmido em embalagem projetada para chegar perfeita até você.</p>
+                    </div>
+                </section>
+
+                <!-- Banner Section -->
+                <section class="banner-section">
+                    <div class="action-banner">
+                        <div class="banner-overlay"></div>
+                        <div class="banner-content">
+                            <h3>Um presente da natureza para você</h3>
+                            <p>Mais do que decoração, ter plantas em casa melhora a qualidade do ar, reduz o estresse e traz vida aos ambientes. Receba sua muda com todo cuidado.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Accordions (Specs & Mission) -->
+                <section class="accordion-section">
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="app.toggleAccordion(this)">
+                            <span>Por que a planta é gratuita?</span>
+                            <span class="accordion-arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                        <div class="accordion-content">
+                            <p>A iniciativa Plantas Para Todos tem como missão levar mais verde e contato com a natureza para as casas brasileiras. A muda é um presente nosso para você! Cadastre-se com seus dados e endereço completo para emitirmos seu código de rastreamento e prepararmos sua Costela de Adão com todo o carinho.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="app.toggleAccordion(this)">
+                            <span>Especificações e Cuidados</span>
+                            <span class="accordion-arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                        <div class="accordion-content">
+                            <table class="specs-table">
+                                <tr>
+                                    <td><strong>Espécie</strong></td>
+                                    <td>Monstera deliciosa (Costela de Adão)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Iluminação</strong></td>
+                                    <td>Meia-sombra ou luz indireta brilhante</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Rega</strong></td>
+                                    <td>Moderada, deixe o solo secar levemente entre regas</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Solo</strong></td>
+                                    <td>Substrato leve, rico em matéria orgânica e bem drenável</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tamanhos</strong></td>
+                                    <td>P (broto), M (muda jovem), G (muda desenvolvida)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reviews and Testimonials -->
+                <section class="reviews-section">
+                    <h2>Depoimentos de quem já recebeu (+3K)</h2>
+                    
+                    <!-- Photos of clients gallery -->
+                    <div class="photo-testimonials-section">
+                        <h3>📸 Fotos dos lares mais verdes</h3>
+                        <div class="photo-reviews-grid">
+                            <div class="photo-review-item" onclick="app.zoomImage('assets/review_1.jpg')">
+                                <img src="assets/review_1.jpg" alt="Planta recebida 1">
+                            </div>
+                            <div class="photo-review-item" onclick="app.zoomImage('assets/review_2.jpg')">
+                                <img src="assets/review_2.jpg" alt="Planta recebida 2">
+                            </div>
+                            <div class="photo-review-item" onclick="app.zoomImage('assets/review_3.jpg')">
+                                <img src="assets/review_3.jpg" alt="Planta recebida 3">
+                            </div>
+                            <div class="photo-review-item" onclick="app.zoomImage('assets/review_4.jpg')">
+                                <img src="assets/review_4.jpg" alt="Planta recebida 4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>💬 Comentários Recentes</h3>
+
+                    <!-- Review 1 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-avatar" style="background-color: var(--clr-primary); color: #fff;">CM</span>
+                            <div>
+                                <span class="reviewer-name">Camila Moreira</span>
+                                <span class="reviewer-verified">✓ Plant-lover verificada</span>
+                            </div>
+                        </div>
+                        <div class="review-stars">★★★★★</div>
+                        <div class="review-title">Chegou perfeita e muito bem embalada!</div>
+                        <p class="review-text">Eu estava com medo de comprar planta pela internet e chegar morta, mas me surpreendi. A embalagem é super inteligente, a muda chegou verdinha e a terra estava úmida. Minha sala ficou outra cara!</p>
+                        <span class="review-date">Há 2 dias</span>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-avatar" style="background-color: var(--clr-primary); color: #fff;">RA</span>
+                            <div>
+                                <span class="reviewer-name">Rafael Alves</span>
+                                <span class="reviewer-verified">✓ Plant-lover verificado</span>
+                            </div>
+                        </div>
+                        <div class="review-stars">★★★★★</div>
+                        <div class="review-title">A planta é linda demais</div>
+                        <p class="review-text">Pedi o tamanho M e já veio com três folhas furadinhas. É muito fácil de cuidar, só rego 2 vezes por semana. O projeto é maravilhoso, parabéns pela iniciativa de trazer mais verde pras nossas casas.</p>
+                        <span class="review-date">Há 5 dias</span>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-avatar" style="background-color: var(--clr-primary); color: #fff;">JS</span>
+                            <div>
+                                <span class="reviewer-name">Juliana Silva</span>
+                                <span class="reviewer-verified">✓ Plant-lover verificada</span>
+                            </div>
+                        </div>
+                        <div class="review-stars">★★★★★</div>
+                        <div class="review-title">Vale muito a pena o frete</div>
+                        <p class="review-text">A qualidade da muda é incrível, vi em uma floricultura e custava mais de 80 reais. Pagar só o envio e a embalagem foi um achado. Já vou pedir uma muda pra dar de presente para minha mãe.</p>
+                        <span class="review-date">Há 1 semana</span>
+                    </div>
+                </section>
+
+                <!-- Reclame Aqui Trust Badge -->
+                <section class="trust-badge-container">
+                    <div class="ra-badge-card">
+                        <div class="ra-header">
+                            <div class="ra-seal">
+                                <div class="ra-seal-inner">RA</div>
+                                <div class="ra-seal-rating">1000</div>
+                            </div>
+                            <div class="ra-title-block">
+                                <span class="ra-tag">✓ REPUTAÇÃO EXCELENTE</span>
+                                <div class="ra-score">9.9<span class="ra-score-max">/10</span></div>
+                            </div>
+                        </div>
+                        <div class="ra-divider"></div>
+                        <div class="ra-stats-grid">
+                            <div class="ra-stat-item">
+                                <span class="ra-stat-val">100%</span>
+                                <span class="ra-stat-label">Dúvidas Respondidas</span>
+                            </div>
+                            <div class="ra-stat-item">
+                                <span class="ra-stat-val">99.1%</span>
+                                <span class="ra-stat-label">Índice de Solução</span>
+                            </div>
+                            <div class="ra-stat-item">
+                                <span class="ra-stat-val">97.8%</span>
+                                <span class="ra-stat-label">Voltariam a Pedir</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security Badges -->
+                <section class="security-badges">
+                    <div class="badge-item">
+                        <span class="badge-icon"><i class="fa-solid fa-lock"></i></span>
+                        <span>Cadastro Seguro</span>
+                    </div>
+                    <div class="badge-item">
+                        <span class="badge-icon"><i class="fa-solid fa-seedling"></i></span>
+                        <span>Qualidade Garantida</span>
+                    </div>
+                    <div class="badge-item">
+                        <span class="badge-icon"><i class="fa-brands fa-whatsapp"></i></span>
+                        <span>Suporte WhatsApp</span>
+                    </div>
+                </section>
+                
+                <section class="footer-cta-container text-center" style="padding: 24px 16px; background-color: var(--clr-background); border-top: 1px solid var(--clr-border);">
+                    <button class="buy-button-cta-inline" onclick="app.openCheckout()">
+                        Quero Minha Muda Grátis
+                    </button>
+                </section>
+
+                <footer class="landing-footer text-center" style="padding: 24px 16px; background-color: var(--clr-background); border-top: 1px solid var(--clr-border); font-family: 'Outfit', sans-serif;">
+                    <p style="font-size: 13px; color: #666; margin-bottom: 12px; line-height: 1.5; font-family: 'Outfit', sans-serif;">
+                        © 2026 Plantas Para Todos. Todos os direitos reservados.<br>
+                        Campanha de conscientização e amor à natureza.
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 16px; font-size: 12px; font-family: 'Outfit', sans-serif;">
+                        <a href="javascript:void(0)" onclick="app.openPolicy('privacy')" style="color: var(--clr-primary); text-decoration: none; font-weight: 500;">Política de Privacidade</a>
+                        <span style="color: #ccc;">|</span>
+                        <a href="javascript:void(0)" onclick="app.openPolicy('terms')" style="color: var(--clr-primary); text-decoration: none; font-weight: 500;">Termos de Uso</a>
+                        <span style="color: #ccc;">|</span>
+                        <a href="javascript:void(0)" onclick="app.openPolicy('shipping')" style="color: var(--clr-primary); text-decoration: none; font-weight: 500;">Política de Envio</a>
+                    </div>
+                </footer>
+            </main>
+        </div>
+
+        <!-- 2. CHECKOUT VIEW (SCREEN OVERLAY) -->
+        <div id="view-checkout" class="app-view">
+            <!-- Checkout Header -->
+            <header class="checkout-header">
+                <button class="back-btn" onclick="app.closeCheckout()" aria-label="Voltar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h2>Solicitar Presente</h2>
+                <div class="secure-ssl-badge">
+                    <i class="fa-solid fa-lock"></i>
+                    Seguro
+                </div>
+            </header>
+
+            <!-- Steps navigation bar (2 steps) -->
+            <div class="checkout-steps-nav">
+                <div class="step-indicator active" id="step-nav-1">1. Seus Dados</div>
+                <div class="step-indicator" id="step-nav-2">2. Endereço</div>
+            </div>
+
+            <div class="checkout-content">
+                <!-- STEP 1: PERSONAL DETAILS -->
+                <div class="checkout-step active" id="step-form-1">
+                    <h3 class="step-title">Seus Dados</h3>
+                    <p class="step-desc">Preencha com atenção. Usaremos seu WhatsApp para enviar o código de rastreio e atualizações da muda.</p>
+
+                    <form id="form-personal" onsubmit="app.nextStep(1, event)">
+                        <div class="form-group">
+                            <label for="input-name">Nome Completo</label>
+                            <input type="text" id="input-name" placeholder="Ex: Ana Souza" required autocomplete="name">
+                            <span class="error-msg" id="error-name">Insira seu nome completo</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-cpf">CPF</label>
+                            <input type="tel" id="input-cpf" placeholder="000.000.000-00" maxlength="14" required autocomplete="off">
+                            <span class="error-msg" id="error-cpf">Insira um CPF válido</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-email">E-mail para Confirmação</label>
+                            <input type="email" id="input-email" placeholder="Ex: seuemail@email.com" required autocomplete="email">
+                            <span class="error-msg" id="error-email">Insira um e-mail válido</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-phone">WhatsApp / Celular</label>
+                            <input type="tel" id="input-phone" placeholder="Ex: (11) 99999-9999" required autocomplete="tel">
+                            <span class="error-msg" id="error-phone">Insira um celular válido</span>
+                        </div>
+
+                        <button type="submit" class="submit-step-btn">
+                            Avançar para Endereço <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- STEP 2: SHIPPING ADDRESS -->
+                <div class="checkout-step" id="step-form-2">
+                    <h3 class="step-title">Endereço de Entrega</h3>
+                    <p class="step-desc">Digite seu CEP para preencher o endereço onde a muda será entregue.</p>
+
+                    <form id="form-shipping" onsubmit="app.nextStep(2, event)">
+                        <div class="form-group zip-group">
+                            <label for="input-cep">CEP</label>
+                            <div class="cep-input-wrapper">
+                                <input type="tel" id="input-cep" placeholder="00000-000" maxlength="9" onblur="app.fetchAddress(this.value)" required>
+                                <div class="cep-spinner" id="cep-loading"></div>
+                            </div>
+                            <span class="error-msg" id="error-cep">CEP não encontrado ou inválido</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group flex-2">
+                                <label for="input-street">Rua / Avenida</label>
+                                <input type="text" id="input-street" placeholder="Rua das Flores" required>
+                            </div>
+                            <div class="form-group flex-1">
+                                <label for="input-number">Número</label>
+                                <input type="text" id="input-number" placeholder="123" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-complement">Complemento (Opcional)</label>
+                            <input type="text" id="input-complement" placeholder="Apto 12, Bloco C">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-neighborhood">Bairro</label>
+                            <input type="text" id="input-neighborhood" placeholder="Jardim Primavera" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group flex-2">
+                                <label for="input-city">Cidade</label>
+                                <input type="text" id="input-city" placeholder="São Paulo" required readonly>
+                            </div>
+                            <div class="form-group flex-1">
+                                <label for="input-state">Estado</label>
+                                <input type="text" id="input-state" placeholder="SP" required readonly>
+                            </div>
+                        </div>
+
+                        <div class="free-shipping-badge-card" style="margin: 16px 0; padding: 14px; background: rgba(50, 88, 40, 0.08); border: 1px dashed var(--clr-primary); border-radius: 10px; display: flex; align-items: center; gap: 12px;">
+                            <i class="fa-solid fa-leaf" style="color: var(--clr-primary); font-size: 20px;"></i>
+                            <div style="font-size: 13px; color: var(--clr-navy); line-height: 1.4;">
+                                <strong>Envio Gratuito da Muda</strong><br>
+                                Sua Costela de Adão será embalada em estufa após a confirmação.
+                            </div>
+                        </div>
+
+                        <div class="step-buttons-row">
+                            <button type="button" class="back-step-btn" onclick="app.prevStep(1)"><i class="fa-solid fa-chevron-left"></i> Voltar</button>
+                            <button type="submit" class="submit-step-btn flex-2">Finalizar Cadastro <i class="fa-solid fa-check"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Loader modal overlay -->
+            <div class="payment-loader-overlay" id="payment-loader">
+                <div class="loader-card">
+                    <div class="spinner-circle"></div>
+                    <h3>Confirmando Cadastro...</h3>
+                    <p>Por favor, aguarde. Estamos gerando o seu código de rastreamento.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. SUCCESS VIEW -->
+        <div id="view-success" class="app-view">
+            <div class="success-screen-content">
+                <div class="success-badge-container">
+                    <div class="success-circle success-done" id="success-status-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                
+                <h1 id="success-status-title">Muda Reservada com Sucesso!</h1>
+                <p class="success-main-text" id="success-status-desc">Seu cadastro foi concluído com sucesso. Guarde o seu código de rastreamento para acompanhar cada etapa do envio.</p>
+                
+                <!-- Confetti Canvas -->
+                <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+                <!-- Tracking Code Card -->
+                <div class="tracking-code-card">
+                    <span class="tracking-card-label">SEU CÓDIGO DE RASTREAMENTO</span>
+                    <div class="tracking-code-row">
+                        <strong id="success-tracking-code" class="tracking-code-val">PLT-842918-BR</strong>
+                        <button type="button" class="btn-copy-tracking" onclick="app.copySuccessTrackingCode()">
+                            <i class="fa-regular fa-copy"></i> Copiar
+                        </button>
+                    </div>
+                    <p class="tracking-tip">Você também pode rastrear a qualquer momento no site digitando o seu CPF.</p>
+                    <span class="copy-alert" id="success-tracking-copy-alert">Código copiado com sucesso!</span>
+                </div>
+
+                <!-- Order Receipt Card -->
+                <div class="receipt-card">
+                    <div class="receipt-header">
+                        <span>Protocolo do Pedido:</span>
+                        <strong id="success-order-id">#PT-182944-BR</strong>
+                    </div>
+                    <div class="receipt-item-row">
+                        <div class="item-thumb">
+                            <img src="assets/planta_1.jpg" alt="Muda Costela de Adão">
+                        </div>
+                        <div class="item-info">
+                            <span class="item-name">Muda de Costela de Adão (Monstera deliciosa)</span>
+                            <span class="item-qty">Tamanho: <strong id="successDisplaySize">M</strong></span>
+                        </div>
+                        <div class="item-price" id="successTotalPaid" style="color: var(--clr-primary); font-weight: 800;">
+                            100% GRÁTIS
+                        </div>
+                    </div>
+
+                    <div class="receipt-divider"></div>
+
+                    <div class="receipt-details">
+                        <div class="receipt-line">
+                            <span>Destinatário:</span>
+                            <strong id="successDonorName">Carregando...</strong>
+                        </div>
+                        <div class="receipt-line">
+                            <span>CPF:</span>
+                            <strong id="successDonorCPF">Carregando...</strong>
+                        </div>
+                        <div class="receipt-line">
+                            <span>WhatsApp:</span>
+                            <strong id="successDonorPhone">Carregando...</strong>
+                        </div>
+                        <div class="receipt-line">
+                            <span>Entregar em:</span>
+                            <strong id="successAddressText">Carregando...</strong>
+                        </div>
+                        <div class="receipt-line">
+                            <span>Status Atual:</span>
+                            <strong style="color: var(--clr-primary);">Em Preparação na Estufa</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Status Timeline -->
+                <div class="shipping-status-box">
+                    <h3>Status do Acompanhamento</h3>
+                    <div class="timeline">
+                        <div class="timeline-item active" id="timeline-step-1">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-info">
+                                <h4>Cadastro Realizado</h4>
+                                <p id="timeline-step-1-desc">Dados confirmados no sistema com sucesso.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item active" id="timeline-step-2">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-info">
+                                <h4>Separação em Estufa</h4>
+                                <p>Muda selecionada e embalagem ecológica em preparação.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item pending" id="timeline-step-3">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-info">
+                                <h4>Coleta & Envio</h4>
+                                <p>Em rota de transferência para seu endereço.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item pending" id="timeline-step-4">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-info">
+                                <h4>Entrega Concluída</h4>
+                                <p>Muda entregue no seu lar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                    <button class="buy-button-cta-inline" onclick="app.openTrackingModal(state.trackingCode || state.donor.cpf)" style="margin-top: 10px;">
+                        <i class="fa-solid fa-truck-fast"></i> Consultar Acompanhamento
+                    </button>
+                    <button class="back-home-btn" onclick="app.resetEcomFlow()">
+                        Voltar para a Página Inicial
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification modal overlay (simulated native notification) -->
+        <div class="toast-notification" id="toast-tip">
+            <div class="toast-content">
+                <span class="toast-icon">🌱</span>
+                <span class="toast-msg">Julia acabou de solicitar a muda grátis em Curitiba/PR.</span>
+            </div>
+        </div>
+
+        <!-- Zoom Image Modal -->
+        <div class="zoom-modal-overlay" id="zoom-modal" onclick="app.closeZoomImage()">
+            <div class="zoom-modal-card">
+                <img src="" alt="Imagem Ampliada" id="zoom-modal-img">
+            </div>
+        </div>
+
+        <!-- Tracking Lookup Modal Overlay -->
+        <div class="tracking-modal-overlay" id="tracking-modal" onclick="if(event.target === this) app.closeTrackingModal()" style="display: none;">
+            <div class="tracking-modal-card">
+                <div class="tracking-modal-header">
+                    <div class="tracking-header-title">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <h3>Rastrear Minha Muda</h3>
+                    </div>
+                    <button class="tracking-close-btn" onclick="app.closeTrackingModal()">&times;</button>
+                </div>
+                <div class="tracking-modal-body">
+                    <p class="tracking-modal-intro">Consulte o status em tempo real informando seu <strong>CPF</strong> ou o <strong>Código de Rastreamento</strong>:</p>
+                    
+                    <form id="form-search-tracking" onsubmit="app.handleTrackingSearch(event)">
+                        <div class="tracking-input-wrapper">
+                            <input type="text" id="input-tracking-query" placeholder="Digite seu CPF ou PLT-..." required autocomplete="off">
+                            <button type="submit" class="btn-search-tracking">
+                                <i class="fa-solid fa-magnifying-glass"></i> Consultar
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Error or not found message -->
+                    <div id="tracking-not-found" class="tracking-not-found" style="display: none;">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>Nenhum pedido encontrado com este CPF ou código. Verifique os dados digitados ou realize seu cadastro grátis.</span>
+                    </div>
+
+                    <!-- Tracking Result Card -->
+                    <div class="tracking-result-box" id="tracking-result-box" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-tag" id="track-result-tag">🌱 Em Preparação</span>
+                            <span class="result-code" id="track-result-code">#PLT-842918-BR</span>
+                        </div>
+
+                        <div class="result-info-grid">
+                            <div>
+                                <small>Destinatário:</small>
+                                <strong id="track-result-name">Nome do Cliente</strong>
+                            </div>
+                            <div>
+                                <small>CPF:</small>
+                                <strong id="track-result-cpf">000.***.***-00</strong>
+                            </div>
+                            <div>
+                                <small>Muda:</small>
+                                <strong id="track-result-item">Costela de Adão (Tamanho M)</strong>
+                            </div>
+                            <div>
+                                <small>Entrega:</small>
+                                <strong id="track-result-address">São Paulo/SP</strong>
+                            </div>
+                        </div>
+
+                        <div class="track-timeline-wrapper">
+                            <h4>Linha do Tempo:</h4>
+                            <div class="timeline" id="modal-tracking-timeline">
+                                <div class="timeline-item active" id="track-step-1">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-info">
+                                        <h4>Cadastro Realizado</h4>
+                                        <p id="track-date-1">Confirmado no sistema</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item active" id="track-step-2">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-info">
+                                        <h4>Separação na Estufa</h4>
+                                        <p>Muda separada e raiz umedecida para transporte</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item pending" id="track-step-3">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-info">
+                                        <h4>Coleta dos Correios / Transportadora</h4>
+                                        <p>Em trânsito para a cidade de destino</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item pending" id="track-step-4">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-info">
+                                        <h4>Entrega ao Destinatário</h4>
+                                        <p>Pacote entregue no endereço cadastrado</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy Modal Overlay -->
+        <div class="policy-modal-overlay" id="policy-modal" onclick="if(event.target === this) app.closePolicy()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 10000; justify-content: center; align-items: center; padding: 16px; backdrop-filter: blur(4px);">
+            <div class="policy-modal-card" style="background: #fff; width: 100%; max-width: 480px; max-height: 80%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; overflow: hidden; animation: modalSlideUp 0.3s ease-out; border: 1px solid var(--clr-border);">
+                <div class="policy-modal-header" style="padding: 16px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background-color: var(--clr-background);">
+                    <h3 id="policy-modal-title" style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--clr-primary);">Política</h3>
+                    <button onclick="app.closePolicy()" style="background: none; border: none; font-size: 24px; color: #999; cursor: pointer; line-height: 1;">&times;</button>
+                </div>
+                <div class="policy-modal-body" id="policy-modal-content" style="padding: 20px; overflow-y: auto; font-family: 'Outfit', sans-serif; font-size: 14px; line-height: 1.6; color: #333;">
+                    <!-- Content will be injected dynamically -->
+                </div>
+                <div class="policy-modal-footer" style="padding: 12px 16px; border-top: 1px solid #eee; text-align: right; background-color: #fafafa;">
+                    <button onclick="app.closePolicy()" style="background-color: var(--clr-primary); color: #fff; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-family: 'Outfit', sans-serif;">Entendi</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js?v=1.0.0"></script>
+</body>
+</html>
