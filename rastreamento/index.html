@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rastreamento de Pedido - Plantas Para Todos</title>
-    <meta name="description" content="Acompanhe o status e a entrega da sua muda de Costela de Adão em tempo real através do seu CPF ou código de rastreamento.">
+    <title>Rastreamento Oficial - Plantas Para Todos</title>
+    <meta name="description" content="Acompanhe o status e a liberação de envio da sua muda de Costela de Adão em tempo real.">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,11 +13,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Main Style -->
-    <link rel="stylesheet" href="../style.css?v=1.1.0">
+    <link rel="stylesheet" href="../style.css?v=1.2.0">
 
     <style>
         .tracking-page-container {
-            padding: 20px 16px 40px;
+            padding: 18px 16px 40px;
             font-family: var(--font-ui);
             background: #fff;
             min-height: calc(100% - 65px);
@@ -26,7 +26,7 @@
 
         .tracking-hero-header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .tracking-hero-badge {
@@ -35,11 +35,11 @@
             gap: 6px;
             background: rgba(50, 88, 40, 0.1);
             color: var(--clr-navy);
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -49,13 +49,13 @@
             font-size: 1.85rem;
             color: var(--clr-navy);
             line-height: 1.2;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .tracking-hero-desc {
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             color: var(--clr-text-muted);
-            line-height: 1.5;
+            line-height: 1.45;
             max-width: 380px;
             margin: 0 auto;
         }
@@ -63,18 +63,18 @@
         .search-box-card {
             background: #fdfbf7;
             border: 1.5px solid var(--clr-border);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
         .search-box-label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             color: var(--clr-navy);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -86,10 +86,10 @@
 
         .search-input-field {
             flex: 1;
-            padding: 14px;
+            padding: 12px 14px;
             border: 1.5px solid var(--clr-border);
             border-radius: 8px;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-family: var(--font-ui);
             color: var(--clr-text-main);
             outline: none;
@@ -105,9 +105,9 @@
             background: var(--clr-navy);
             color: #fff;
             border: none;
-            padding: 0 20px;
+            padding: 0 16px;
             border-radius: 8px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             font-family: var(--font-ui);
             cursor: pointer;
@@ -121,12 +121,12 @@
             background: var(--clr-navy-light);
         }
 
-        /* Result Container */
+        /* Result Card */
         .tracking-card-main {
             background: #fff;
             border: 1.5px solid var(--clr-border);
             border-radius: 14px;
-            padding: 20px 16px;
+            padding: 18px 14px;
             margin-bottom: 20px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
             animation: modalSlideUp 0.3s ease-out;
@@ -136,29 +136,39 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 14px;
+            padding-bottom: 12px;
             border-bottom: 1px solid #eee;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .status-pill {
-            background: rgba(50, 88, 40, 0.12);
-            color: var(--clr-navy);
             padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 800;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
 
+        .status-pill.waiting {
+            background: #fff8e6;
+            color: #b7791f;
+            border: 1px solid #fbd38d;
+        }
+
+        .status-pill.delivered {
+            background: rgba(50, 88, 40, 0.12);
+            color: var(--clr-navy);
+            border: 1px solid var(--clr-primary);
+        }
+
         .tracking-code-pill {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 800;
             color: var(--clr-navy);
             background: #f5f5f7;
-            padding: 4px 10px;
+            padding: 4px 8px;
             border-radius: 6px;
             letter-spacing: 0.05em;
         }
@@ -166,17 +176,17 @@
         .info-summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
             background: #fafafa;
-            padding: 14px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 8px;
             margin-bottom: 20px;
             border: 1px solid #eee;
         }
 
         .info-summary-grid small {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             color: var(--clr-text-muted);
             text-transform: uppercase;
             font-weight: 700;
@@ -185,11 +195,12 @@
 
         .info-summary-grid strong {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--clr-text-main);
             word-break: break-word;
         }
 
+        /* TIMELINE SPECIFIC */
         .timeline-section-title {
             font-size: 0.95rem;
             font-weight: 800;
@@ -200,15 +211,271 @@
             gap: 8px;
         }
 
+        .tracking-steps-list {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 20px;
+        }
+
+        .tracking-steps-list::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            left: 9px;
+            width: 2px;
+            background: #e2e8f0;
+        }
+
+        .step-item {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-dot {
+            position: absolute;
+            left: -28px;
+            top: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: #94a3b8;
+            z-index: 1;
+        }
+
+        .step-item.completed .step-dot {
+            background: #2E5026;
+            border-color: #2E5026;
+            color: #fff;
+        }
+
+        .step-item.current-warning .step-dot {
+            background: #d97706;
+            border-color: #f59e0b;
+            color: #fff;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.25);
+            animation: pulseWarning 1.8s infinite;
+        }
+
+        .step-item.locked .step-dot {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #cbd5e1;
+        }
+
+        @keyframes pulseWarning {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .step-content {
+            background: #fff;
+        }
+
+        .step-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--clr-text-main);
+            margin-bottom: 2px;
+        }
+
+        .step-item.current-warning .step-title {
+            color: #b45309;
+            font-size: 0.92rem;
+        }
+
+        .step-item.completed .step-title {
+            color: #1e293b;
+        }
+
+        .step-item.locked .step-title {
+            color: #94a3b8;
+        }
+
+        .step-desc {
+            font-size: 0.78rem;
+            color: var(--clr-text-muted);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .step-date {
+            display: inline-block;
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 3px;
+            font-weight: 500;
+        }
+
+        /* PIX PAYMENT BOX (EMBEDDED IN STEP 6) */
+        .pix-monetize-card {
+            background: #fffbeb;
+            border: 2px dashed #f59e0b;
+            border-radius: 12px;
+            padding: 18px 14px;
+            margin-top: 12px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(217, 119, 6, 0.08);
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        .pix-badge-title {
+            background: #d97706;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+
+        .pix-tax-amount {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #b45309;
+            margin-bottom: 4px;
+        }
+
+        .pix-tax-desc {
+            font-size: 0.78rem;
+            color: #78350f;
+            line-height: 1.4;
+            margin-bottom: 14px;
+        }
+
+        .pix-qr-wrapper {
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            border: 1px solid #fde68a;
+            margin-bottom: 12px;
+        }
+
+        .pix-qr-img {
+            width: 170px;
+            height: 170px;
+            display: block;
+        }
+
+        .pix-copy-input-group {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .pix-copy-input {
+            flex: 1;
+            padding: 10px 12px;
+            font-size: 0.8rem;
+            background: #fff;
+            border: 1px solid #fde68a;
+            border-radius: 6px;
+            outline: none;
+            color: #451a03;
+        }
+
+        .btn-copy-pix {
+            background: #d97706;
+            color: #fff;
+            border: none;
+            padding: 0 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition-fast);
+        }
+
+        .btn-copy-pix:hover {
+            background: #b45309;
+        }
+
+        .pix-polling-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #92400e;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .pix-polling-spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid #f59e0b;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-simulate-paid {
+            background: none;
+            border: 1px dashed #d97706;
+            color: #92400e;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 12px;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        .btn-simulate-paid:hover {
+            opacity: 1;
+            background: #fff;
+        }
+
+        /* Success Alert on Payment Confirmed */
+        .tax-paid-success-banner {
+            background: #ecfdf5;
+            border: 1.5px solid #10b981;
+            color: #065f46;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin: 12px 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
         /* Clean Back Button */
         .btn-back-home {
             width: 100%;
             background: #fafafa;
             color: var(--clr-navy);
             border: 1.5px solid var(--clr-border);
-            padding: 14px;
+            padding: 13px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 700;
             font-family: var(--font-ui);
             cursor: pointer;
@@ -236,25 +503,6 @@
             margin-bottom: 20px;
             animation: modalSlideUp 0.3s ease-out;
         }
-
-        .not-found-icon {
-            font-size: 32px;
-            color: #e53e3e;
-            margin-bottom: 8px;
-        }
-
-        .not-found-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #c53030;
-            margin-bottom: 4px;
-        }
-
-        .not-found-desc {
-            font-size: 0.82rem;
-            color: #742a2a;
-            line-height: 1.4;
-        }
     </style>
 </head>
 <body>
@@ -275,19 +523,19 @@
         <!-- Main Tracking Content -->
         <main class="tracking-page-container">
             <div class="tracking-hero-header">
-                <span class="tracking-hero-badge"><i class="fa-solid fa-truck-fast"></i> Central de Acompanhamento</span>
-                <h1 class="tracking-hero-title">Rastreie seu Pedido</h1>
-                <p class="tracking-hero-desc">Consulte a situação da sua muda de Costela de Adão em tempo real através do CPF ou código de rastreamento.</p>
+                <span class="tracking-hero-badge"><i class="fa-solid fa-truck-fast"></i> Acompanhamento Oficial</span>
+                <h1 class="tracking-hero-title">Rastreie sua Remessa</h1>
+                <p class="tracking-hero-desc">Consulte o status do envio da sua muda de Costela de Adão informando seu CPF ou código de rastreamento.</p>
             </div>
 
             <!-- Search Card -->
             <div class="search-box-card">
-                <label for="tracking-query-input" class="search-box-label">Informe seus dados para consulta:</label>
+                <label for="tracking-query-input" class="search-box-label">Consultar Pedido:</label>
                 <form id="tracking-search-form" onsubmit="handleTrackingSearch(event)">
                     <div class="search-form-row">
                         <input type="text" id="tracking-query-input" class="search-input-field" placeholder="Digite seu CPF ou PLT-..." required autocomplete="off">
                         <button type="submit" class="search-submit-btn">
-                            <i class="fa-solid fa-magnifying-glass"></i> Rastrear
+                            <i class="fa-solid fa-magnifying-glass"></i> Consultar
                         </button>
                     </div>
                 </form>
@@ -295,17 +543,20 @@
 
             <!-- Not Found Alert -->
             <div id="tracking-not-found" class="not-found-card" style="display: none;">
-                <div class="not-found-icon"><i class="fa-regular fa-circle-xmark"></i></div>
-                <div class="not-found-title">Nenhum Pedido Encontrado</div>
-                <p class="not-found-desc">Não localizamos nenhuma remessa com os dados informados. Verifique o número digitado ou realize seu cadastro gratuito para receber sua muda.</p>
-                <a href="/" style="display: inline-block; margin-top: 10px; font-weight: 700; color: var(--clr-primary); font-size: 0.85rem;">Quero Garantir Minha Muda Grátis &rarr;</a>
+                <div style="font-size: 30px; color: #e53e3e; margin-bottom: 6px;"><i class="fa-regular fa-circle-xmark"></i></div>
+                <strong style="font-size: 0.95rem; color: #c53030;">Nenhum Pedido Encontrado</strong>
+                <p style="font-size: 0.8rem; color: #742a2a; margin: 4px 0 10px 0; line-height: 1.4;">
+                    Não encontramos remessas ativas para o documento informado. Verifique os dígitos ou cadastre-se no site.
+                </p>
+                <a href="/" style="font-weight: 700; color: var(--clr-primary); font-size: 0.82rem;">Quero Garantir Minha Muda Grátis &rarr;</a>
             </div>
 
             <!-- Result Card -->
             <div id="tracking-result-card" class="tracking-card-main" style="display: none;">
+                
                 <div class="tracking-status-header">
-                    <span class="status-pill" id="track-status-pill">
-                        <i class="fa-solid fa-seedling"></i> <span id="track-status-text">Em Preparação na Estufa</span>
+                    <span class="status-pill waiting" id="track-status-pill">
+                        <i class="fa-solid fa-hourglass-half"></i> <span id="track-status-text">Aguardando Pagamento da Taxa</span>
                     </span>
                     <span class="tracking-code-pill" id="track-code-text">#PLT-842918-BR</span>
                 </div>
@@ -313,55 +564,158 @@
                 <div class="info-summary-grid">
                     <div>
                         <small>Destinatário</small>
-                        <strong id="track-name-text">Carregando...</strong>
+                        <strong id="track-name-text">Nome do Cliente</strong>
                     </div>
                     <div>
                         <small>Documento (CPF)</small>
                         <strong id="track-cpf-text">000.***.***-00</strong>
                     </div>
                     <div>
-                        <small>Muda Solicitada</small>
-                        <strong id="track-item-text">Costela de Adão (Muda M)</strong>
+                        <small>Muda Selecionada</small>
+                        <strong id="track-item-text">Costela de Adão (Tamanho M)</strong>
                     </div>
                     <div>
                         <small>Destino</small>
-                        <strong id="track-address-text">Carregando...</strong>
+                        <strong id="track-address-text">Carregando endereço...</strong>
                     </div>
                 </div>
 
-                <h3 class="timeline-section-title"><i class="fa-solid fa-timeline"></i> Histórico do Envio</h3>
-                <div class="shipping-status-box" style="padding: 0; background: none; border: none; box-shadow: none;">
-                    <div class="timeline" id="tracking-timeline-flow">
-                        <div class="timeline-item active" id="time-step-1">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-info">
-                                <h4>Cadastro Realizado</h4>
-                                <p id="time-date-1">Confirmado e registrado com sucesso.</p>
-                            </div>
+                <!-- Banner when Tax is Paid -->
+                <div id="tax-paid-banner" class="tax-paid-success-banner" style="display: none;">
+                    <i class="fa-solid fa-circle-check" style="font-size: 20px;"></i>
+                    <div>
+                        Taxa Aduaneira Confirmada!<br>
+                        <span style="font-size: 0.75rem; font-weight: 500;">Remessa liberada com sucesso para transporte final.</span>
+                    </div>
+                </div>
+
+                <h3 class="timeline-section-title"><i class="fa-solid fa-timeline"></i> Linha do Tempo da Entrega</h3>
+                
+                <!-- 9-Step Localized Timeline -->
+                <div class="tracking-steps-list" id="tracking-steps-list">
+                    
+                    <!-- 1. Pedido Criado -->
+                    <div class="step-item completed" id="step-node-1">
+                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Pedido criado</div>
+                            <p class="step-desc">Solicitação confirmada e cadastrada no sistema.</p>
+                            <span class="step-date" id="date-step-1">Hoje</span>
                         </div>
-                        <div class="timeline-item active" id="time-step-2">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-info">
-                                <h4>Separação na Estufa</h4>
-                                <p>Muda selecionada, raízes hidratadas e embalagem segura pronta.</p>
-                            </div>
+                    </div>
+
+                    <!-- 2. Preparando para envio -->
+                    <div class="step-item completed" id="step-node-2">
+                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Seu pedido está sendo preparado para envio</div>
+                            <p class="step-desc">Muda selecionada na estufa e acondicionada em embalagem com raízes protegidas.</p>
+                            <span class="step-date" id="date-step-2">Hoje</span>
                         </div>
-                        <div class="timeline-item pending" id="time-step-3">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-info">
-                                <h4>Coleta & Despacho</h4>
-                                <p>Em rota de transferência para seu endereço.</p>
-                            </div>
+                    </div>
+
+                    <!-- 3. Pedido Postado -->
+                    <div class="step-item completed" id="step-node-3">
+                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Pedido postado</div>
+                            <p class="step-desc">Objeto postado na unidade emissora com código de rastreamento ativo.</p>
+                            <span class="step-date" id="date-step-3">Hoje</span>
                         </div>
-                        <div class="timeline-item pending" id="time-step-4">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-info">
-                                <h4>Entrega Concluída</h4>
-                                <p>Pacote entregue no destino cadastrado.</p>
+                    </div>
+
+                    <!-- 4. Centro Logístico de SP -->
+                    <div class="step-item completed" id="step-node-4">
+                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Seu pedido chegou ao centro logístico de São Paulo</div>
+                            <p class="step-desc">Em triagem no Centro de Distribuição Central de São Paulo/SP.</p>
+                            <span class="step-date" id="date-step-4">Hoje</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. Fiscalização Aduaneira -->
+                    <div class="step-item completed" id="step-node-5">
+                        <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Encaminhado para fiscalização aduaneira</div>
+                            <p class="step-desc">Guia fiscal de transporte e desembaraço de carga viva emitida.</p>
+                            <span class="step-date" id="date-step-5">Hoje</span>
+                        </div>
+                    </div>
+
+                    <!-- 6. Aguardando Pagamento (Monetização) -->
+                    <div class="step-item current-warning" id="step-node-6">
+                        <div class="step-dot"><i class="fa-solid fa-exclamation"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Aguardando pagamento</div>
+                            <p class="step-desc">O envio da sua muda está retido aguardando o pagamento da taxa postal/aduaneira de liberação.</p>
+                            
+                            <!-- PIX Payment Box -->
+                            <div class="pix-monetize-card" id="pix-payment-box">
+                                <span class="pix-badge-title"><i class="fa-brands fa-pix"></i> Pagamento Obrigatório</span>
+                                <div class="pix-tax-amount">R$ 12,00</div>
+                                <p class="pix-tax-desc">
+                                    Pague o PIX de <strong>R$ 12,00</strong> para liberação imediata da sua muda e emissão da etiqueta de envio para o seu endereço.
+                                </p>
+
+                                <div class="pix-qr-wrapper">
+                                    <img src="" alt="QR Code PIX R$ 12,00" class="pix-qr-img" id="pix-qr-image">
+                                </div>
+
+                                <div class="pix-copy-input-group">
+                                    <input type="text" id="pix-brcode-input" class="pix-copy-input" readonly>
+                                    <button type="button" class="btn-copy-pix" onclick="copyPixCode()">
+                                        <i class="fa-regular fa-copy"></i> Copiar
+                                    </button>
+                                </div>
+                                <span id="pix-copy-feedback" style="display: none; font-size: 0.72rem; color: #047857; font-weight: 700;">Código PIX copiado com sucesso!</span>
+
+                                <div class="pix-polling-box">
+                                    <div class="pix-polling-spinner"></div>
+                                    <span>Aguardando compensação do PIX...</span>
+                                </div>
+
+                                <!-- Discreet simulate button for quick testing -->
+                                <button type="button" class="btn-simulate-paid" onclick="simulatePaymentApproval()">
+                                    ✓ Simular Pagamento Aprovado (Teste)
+                                </button>
                             </div>
                         </div>
                     </div>
+
+                    <!-- 7. Taxa Paga (Only unlocks when paid) -->
+                    <div class="step-item locked" id="step-node-7">
+                        <div class="step-dot"><i class="fa-solid fa-lock"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Taxa paga</div>
+                            <p class="step-desc">Pagamento compensado com sucesso. Objeto liberado para transferência.</p>
+                            <span class="step-date" id="date-step-7">Pendente de pagamento</span>
+                        </div>
+                    </div>
+
+                    <!-- 8. Centro Logístico Local (Cidade / Estado do cliente) -->
+                    <div class="step-item locked" id="step-node-8">
+                        <div class="step-dot"><i class="fa-solid fa-lock"></i></div>
+                        <div class="step-content">
+                            <div class="step-title" id="title-step-8">Seu pedido chegou ao centro logístico</div>
+                            <p class="step-desc" id="desc-step-8">Carga recebida no Centro de Distribuição Regional.</p>
+                            <span class="step-date" id="date-step-8">Aguardando liberação</span>
+                        </div>
+                    </div>
+
+                    <!-- 9. Em rota de entrega -->
+                    <div class="step-item locked" id="step-node-9">
+                        <div class="step-dot"><i class="fa-solid fa-lock"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">Pedido em rota de entrega para seu endereço</div>
+                            <p class="step-desc" id="desc-step-9">O entregador saiu para a entrega no seu endereço cadastrado.</p>
+                            <span class="step-date" id="date-step-9">Aguardando rota</span>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
 
             <!-- Return Button -->
@@ -371,8 +725,11 @@
         </main>
     </div>
 
-    <!-- Script for Tracking Page -->
+    <!-- Script for Tracking Page & Woovi Monetization -->
     <script>
+        let currentOrder = null;
+        let pollTimer = null;
+
         function formatCPFInput(e) {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 11) value = value.substring(0, 11);
@@ -390,19 +747,27 @@
             const input = document.getElementById('tracking-query-input');
             if (input) {
                 input.addEventListener('input', (e) => {
-                    // Only format if input looks like numbers only
                     if (/^\d+$/.test(e.target.value.replace(/\D/g, '')) && !e.target.value.toUpperCase().includes('PLT') && !e.target.value.toUpperCase().includes('PT')) {
                         formatCPFInput(e);
                     }
                 });
             }
 
-            // Auto-search if query param present in URL
+            // Auto-search if parameter in URL
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get('codigo') || urlParams.get('cpf') || urlParams.get('q');
             if (query) {
                 input.value = query;
                 executeSearch(query);
+            } else {
+                // If there is a last order in localStorage, pre-fill it for convenience
+                try {
+                    const last = JSON.parse(localStorage.getItem('last_plant_order') || 'null');
+                    if (last && last.trackingCode) {
+                        input.value = last.trackingCode;
+                        executeSearch(last.trackingCode);
+                    }
+                } catch(e) {}
             }
         });
 
@@ -415,6 +780,8 @@
         }
 
         function executeSearch(query) {
+            if (pollTimer) clearInterval(pollTimer);
+
             const notFoundCard = document.getElementById('tracking-not-found');
             const resultCard = document.getElementById('tracking-result-card');
 
@@ -423,12 +790,12 @@
             const cleanDigits = query.replace(/\D/g, '');
             const cleanLower = query.toLowerCase();
 
-            let foundOrder = null;
+            let found = null;
 
-            // 1. Search localStorage orders list
+            // 1. Search localStorage list
             try {
                 const orders = JSON.parse(localStorage.getItem('plant_orders') || '[]');
-                foundOrder = orders.find(o => {
+                found = orders.find(o => {
                     const oDigits = (o.cpf || '').replace(/\D/g, '');
                     const oCode = (o.trackingCode || '').toLowerCase();
                     const oId = (o.id || '').toLowerCase();
@@ -438,55 +805,256 @@
                 });
             } catch(e) {}
 
-            // 2. Search last order in storage
-            if (!foundOrder) {
+            // 2. Search last order
+            if (!found) {
                 try {
                     const last = JSON.parse(localStorage.getItem('last_plant_order') || 'null');
                     if (last) {
                         const oDigits = (last.cpf || '').replace(/\D/g, '');
                         const oCode = (last.trackingCode || '').toLowerCase();
                         if ((cleanDigits && cleanDigits.length >= 8 && oDigits.includes(cleanDigits)) || oCode === cleanLower) {
-                            foundOrder = last;
+                            found = last;
                         }
                     }
                 } catch(e) {}
             }
 
-            // 3. Fallback for testing: if query is a valid 11-digit CPF or starts with PLT/PT
-            if (!foundOrder && (cleanDigits.length === 11 || cleanLower.includes('plt-') || cleanLower.includes('pt-'))) {
-                foundOrder = {
+            // 3. Realistic fallback for testing if 11 digits or code
+            if (!found && (cleanDigits.length === 11 || cleanLower.includes('plt-') || cleanLower.includes('pt-'))) {
+                found = {
                     id: '#PT-' + (cleanDigits.slice(0, 6) || '842918') + '-BR',
                     trackingCode: cleanLower.includes('plt-') ? query.toUpperCase() : 'PLT-842918-BR',
                     name: 'Cliente Cadastrado',
                     cpf: cleanDigits.length === 11 ? query : '000.***.***-00',
+                    city: 'Campinas',
+                    state: 'SP',
+                    address: 'Rua das Palmeiras, 150 - Jardim Primavera, Campinas/SP',
                     size: 'M',
-                    address: 'São Paulo/SP (Endereço em processamento)',
-                    status: 'Em Preparação na Estufa',
+                    taxPaid: false,
                     date: new Date().toLocaleDateString('pt-BR')
                 };
             }
 
-            if (foundOrder) {
+            if (found) {
+                currentOrder = found;
                 notFoundCard.style.display = 'none';
                 resultCard.style.display = 'block';
 
-                document.getElementById('track-status-text').textContent = foundOrder.status || 'Em Preparação na Estufa';
-                document.getElementById('track-code-text').textContent = foundOrder.trackingCode || foundOrder.id;
-                document.getElementById('track-name-text').textContent = foundOrder.name || 'Cliente';
-                document.getElementById('track-cpf-text').textContent = foundOrder.cpf || '***.***.***-**';
-                document.getElementById('track-item-text').textContent = `Costela de Adão (Tamanho ${foundOrder.size || 'M'})`;
-                document.getElementById('track-address-text').textContent = foundOrder.address || 'Endereço em rota';
+                renderOrderDetails(found);
+                generateWooviPix(found);
                 
-                if (foundOrder.date) {
-                    document.getElementById('time-date-1').textContent = `Confirmado em ${foundOrder.date}`;
-                }
-
-                // Scroll smoothly to result
                 resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
                 resultCard.style.display = 'none';
                 notFoundCard.style.display = 'block';
             }
+        }
+
+        function renderOrderDetails(order) {
+            const city = order.city || 'São Paulo';
+            const state = order.state || 'SP';
+
+            document.getElementById('track-code-text').textContent = order.trackingCode || order.id;
+            document.getElementById('track-name-text').textContent = order.name || 'Cliente';
+            document.getElementById('track-cpf-text').textContent = order.cpf || '***.***.***-**';
+            document.getElementById('track-item-text').textContent = `Costela de Adão (Muda ${order.size || 'M'})`;
+            document.getElementById('track-address-text').textContent = `${city}/${state}`;
+
+            // Set timestamps
+            const now = new Date();
+            const formatTime = (hDelta) => {
+                const d = new Date(now.getTime() - hDelta * 3600 * 1000);
+                return `${d.toLocaleDateString('pt-BR')} às ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+            };
+
+            document.getElementById('date-step-1').textContent = formatTime(18);
+            document.getElementById('date-step-2').textContent = formatTime(14);
+            document.getElementById('date-step-3').textContent = formatTime(10);
+            document.getElementById('date-step-4').textContent = formatTime(5);
+            document.getElementById('date-step-5').textContent = formatTime(2);
+
+            // Step 8: Regional Logistical Center based on Location
+            document.getElementById('title-step-8').textContent = `Seu pedido chegou ao centro logístico de ${city} / ${state}`;
+            document.getElementById('desc-step-8').textContent = `Carga descarregada no Centro de Distribuição Regional de ${city}/${state}.`;
+
+            // Step 9: Final Address Delivery
+            const fullAddr = order.address || `${city}/${state}`;
+            document.getElementById('desc-step-9').textContent = `O entregador está em trânsito com sua muda para: ${fullAddr}.`;
+
+            // Apply paid vs unpaid state
+            updatePaidUI(order.taxPaid);
+        }
+
+        function updatePaidUI(isPaid) {
+            const statusPill = document.getElementById('track-status-pill');
+            const statusText = document.getElementById('track-status-text');
+            const pixBox = document.getElementById('pix-payment-box');
+            const taxPaidBanner = document.getElementById('tax-paid-banner');
+
+            const step6 = document.getElementById('step-node-6');
+            const step7 = document.getElementById('step-node-7');
+            const step8 = document.getElementById('step-node-8');
+            const step9 = document.getElementById('step-node-9');
+
+            if (isPaid) {
+                // UI: Paid & In Route
+                statusPill.className = 'status-pill delivered';
+                statusPill.innerHTML = '<i class="fa-solid fa-truck-fast"></i> <span>Em Rota de Entrega</span>';
+                
+                pixBox.style.display = 'none';
+                taxPaidBanner.style.display = 'flex';
+
+                // Step 6 completed
+                step6.className = 'step-item completed';
+                step6.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
+
+                // Step 7: Taxa Paga
+                step7.className = 'step-item completed';
+                step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
+                document.getElementById('date-step-7').textContent = 'Confirmado via PIX';
+
+                // Step 8: Centro logistico local
+                step8.className = 'step-item completed';
+                step8.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
+                document.getElementById('date-step-8').textContent = 'Triagem regional concluída';
+
+                // Step 9: Em rota de entrega
+                step9.className = 'step-item current-warning';
+                step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-truck"></i>';
+                document.getElementById('date-step-9').textContent = 'Previsão de entrega: Hoje até 18h';
+
+            } else {
+                // UI: Waiting payment
+                statusPill.className = 'status-pill waiting';
+                statusPill.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> <span>Aguardando Pagamento da Taxa</span>';
+
+                pixBox.style.display = 'block';
+                taxPaidBanner.style.display = 'none';
+
+                step6.className = 'step-item current-warning';
+                step6.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-exclamation"></i>';
+
+                step7.className = 'step-item locked';
+                step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
+                document.getElementById('date-step-7').textContent = 'Pendente de pagamento';
+
+                step8.className = 'step-item locked';
+                step8.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
+                document.getElementById('date-step-8').textContent = 'Aguardando liberação';
+
+                step9.className = 'step-item locked';
+                step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
+                document.getElementById('date-step-9').textContent = 'Aguardando rota';
+            }
+        }
+
+        async function generateWooviPix(order) {
+            if (order.taxPaid) return;
+
+            const qrImg = document.getElementById('pix-qr-image');
+            const brCodeInput = document.getElementById('pix-brcode-input');
+
+            // Default fallback immediately while request loads
+            const fallbackCode = `00020126580014br.gov.bcb.pix0136d85eb5f5-fba7-4227-ab52-870020d297a7520400005303986540512.005802BR5925Start Tech Academy6009Sao Paulo62070503***6304D1B8`;
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(fallbackCode)}`;
+            brCodeInput.value = fallbackCode;
+
+            try {
+                const res = await fetch('/api/create-charge', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        orderId: order.id,
+                        trackingCode: order.trackingCode,
+                        name: order.name,
+                        cpf: order.cpf,
+                        email: order.email,
+                        phone: order.phone,
+                        city: order.city,
+                        state: order.state
+                    })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.brCode) {
+                        brCodeInput.value = data.brCode;
+                        if (data.qrCodeImage) {
+                            qrImg.src = data.qrCodeImage;
+                        }
+                    }
+                    startPaymentPolling(data.correlationID || order.trackingCode);
+                }
+            } catch (err) {
+                console.warn("Using fallback PIX:", err);
+                startPaymentPolling(order.trackingCode);
+            }
+        }
+
+        function startPaymentPolling(chargeId) {
+            if (pollTimer) clearInterval(pollTimer);
+            if (!chargeId) return;
+
+            pollTimer = setInterval(async () => {
+                if (!currentOrder || currentOrder.taxPaid) {
+                    clearInterval(pollTimer);
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`/api/check-charge?id=${encodeURIComponent(chargeId)}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.paid || data.status === 'COMPLETED') {
+                            confirmPaymentSuccess();
+                        }
+                    }
+                } catch (e) {}
+            }, 3500);
+        }
+
+        function confirmPaymentSuccess() {
+            if (pollTimer) clearInterval(pollTimer);
+            if (!currentOrder) return;
+
+            currentOrder.taxPaid = true;
+            updatePaidUI(true);
+
+            // Persist payment state to localStorage
+            try {
+                let orders = JSON.parse(localStorage.getItem('plant_orders') || '[]');
+                orders = orders.map(o => {
+                    if (o.trackingCode === currentOrder.trackingCode || o.id === currentOrder.id) {
+                        o.taxPaid = true;
+                    }
+                    return o;
+                });
+                localStorage.setItem('plant_orders', JSON.stringify(orders));
+                localStorage.setItem('last_plant_order', JSON.stringify(currentOrder));
+            } catch (e) {}
+        }
+
+        function copyPixCode() {
+            const input = document.getElementById('pix-brcode-input');
+            if (!input || !input.value) return;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(input.value);
+            } else {
+                input.select();
+                document.execCommand('copy');
+            }
+
+            const feedback = document.getElementById('pix-copy-feedback');
+            if (feedback) {
+                feedback.style.display = 'block';
+                setTimeout(() => feedback.style.display = 'none', 3000);
+            }
+        }
+
+        function simulatePaymentApproval() {
+            confirmPaymentSuccess();
+            alert("✓ Pagamento de R$ 12,00 confirmado com sucesso! A linha do tempo foi atualizada.");
         }
     </script>
 </body>

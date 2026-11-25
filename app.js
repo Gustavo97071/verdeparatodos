@@ -409,10 +409,16 @@ const app = {
             phone: state.donor.phone,
             address: `${state.donor.street}, Nº ${state.donor.number}${state.donor.complement ? ' (' + state.donor.complement + ')' : ''}, ${state.donor.neighborhood}, ${state.donor.city}/${state.donor.state}`,
             cep: state.donor.cep,
-            size: state.donor.size || 'M',
+            city: state.donor.city || 'São Paulo',
+            state: state.donor.state || 'SP',
+            street: state.donor.street || '',
+            number: state.donor.number || '',
+            neighborhood: state.donor.neighborhood || '',
+            complement: state.donor.complement || '',
+            taxPaid: false,
             date: new Date().toLocaleDateString('pt-BR'),
-            status: '🌱 Em Preparação na Estufa',
-            step: 2
+            status: '⚠️ Aguardando Pagamento da Taxa',
+            step: 6
         };
 
         // Persist to localStorage for tracking lookup
