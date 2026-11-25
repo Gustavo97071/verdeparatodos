@@ -416,9 +416,10 @@ const app = {
             neighborhood: state.donor.neighborhood || '',
             complement: state.donor.complement || '',
             taxPaid: false,
+            createdAt: Date.now(),
             date: new Date().toLocaleDateString('pt-BR'),
-            status: '⚠️ Aguardando Pagamento da Taxa',
-            step: 6
+            status: 'Em trânsito',
+            step: 5
         };
 
         // Persist to localStorage for tracking lookup

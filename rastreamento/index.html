@@ -163,6 +163,57 @@
             border: 1px solid var(--clr-primary);
         }
 
+        .status-pill.in-transit {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .sim-control-bar {
+            background: #f8fafc;
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sim-toggle {
+            background: #0f172a;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-sim-toggle:hover {
+            background: #334155;
+            transform: translateY(-1px);
+        }
+
+        .step-item.in-progress .step-dot {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+
+        .step-item.in-progress .step-title {
+            color: #1d4ed8;
+            font-size: 0.90rem;
+        }
+
         .tracking-code-pill {
             font-size: 0.82rem;
             font-weight: 800;
@@ -589,6 +640,17 @@
                     </div>
                 </div>
 
+                <!-- Demo / Simulation Controls Bar -->
+                <div class="sim-control-bar" id="sim-control-bar">
+                    <div style="display: flex; align-items: center; gap: 6px; color: #475569;">
+                        <i class="fa-solid fa-clock-rotate-left" style="color: #64748b;"></i>
+                        <span>Progresso Temporal: <strong id="sim-time-label">Calculando...</strong></span>
+                    </div>
+                    <button type="button" class="btn-sim-toggle" id="btn-sim-toggle" onclick="toggleSimulate48h()">
+                        <i class="fa-solid fa-forward"></i> <span>Avançar +48h (Ver Taxa R$12)</span>
+                    </button>
+                </div>
+
                 <h3 class="timeline-section-title"><i class="fa-solid fa-timeline"></i> Linha do Tempo da Entrega</h3>
                 
                 <!-- 9-Step Localized Timeline -->
@@ -646,10 +708,11 @@
 
                     <!-- 6. Aguardando Pagamento (Monetização) -->
                     <div class="step-item current-warning" id="step-node-6">
-                        <div class="step-dot"><i class="fa-solid fa-exclamation"></i></div>
+                        <div class="step-dot" id="dot-step-6"><i class="fa-solid fa-exclamation"></i></div>
                         <div class="step-content">
-                            <div class="step-title">Aguardando pagamento</div>
-                            <p class="step-desc">O envio da sua muda está retido aguardando o pagamento da taxa postal/aduaneira de liberação.</p>
+                            <div class="step-title" id="title-step-6">Aguardando pagamento</div>
+                            <p class="step-desc" id="desc-step-6">O envio da sua muda está retido aguardando o pagamento da taxa postal/aduaneira de liberação.</p>
+                            <span class="step-date" id="date-step-6">Hoje</span>
                             
                             <!-- PIX Payment Box -->
                             <div class="pix-monetize-card" id="pix-payment-box">
@@ -728,6 +791,7 @@
     <!-- Script for Tracking Page & Woovi Monetization -->
     <script>
         let currentOrder = null;
+        let isSimulating48h = false;
         let pollTimer = null;
 
         function formatCPFInput(e) {
@@ -831,23 +895,84 @@
                     address: 'Rua das Palmeiras, 150 - Jardim Primavera, Campinas/SP',
                     size: 'M',
                     taxPaid: false,
+                    createdAt: Date.now() - 40 * 60 * 1000, // 40 minutes ago (starts < 48h)
                     date: new Date().toLocaleDateString('pt-BR')
                 };
             }
 
             if (found) {
                 currentOrder = found;
+                isSimulating48h = false;
                 notFoundCard.style.display = 'none';
                 resultCard.style.display = 'block';
 
                 renderOrderDetails(found);
-                generateWooviPix(found);
                 
                 resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
                 resultCard.style.display = 'none';
                 notFoundCard.style.display = 'block';
             }
+        }
+
+        // Calculates authentic logistic progression timestamps with business-hour constraints
+        function calculateLogisticSchedule(order, isSimulated) {
+            const createdAtMs = order.createdAt ? Number(order.createdAt) : (Date.now() - 40 * 60 * 1000);
+            const realElapsedHours = (Date.now() - createdAtMs) / (1000 * 60 * 60);
+            const isOver48h = isSimulated || realElapsedHours >= 48;
+
+            // Stable deterministic seed from order tracking code or CPF
+            const seedStr = (order.trackingCode || order.cpf || '842918').replace(/\D/g, '') || '842918';
+            const seed = parseInt(seedStr.slice(-4), 10) || 1234;
+
+            // If isOver48h: virtual base time is ~50h ago so Step 6 lands as today
+            // If < 48h: base is real order creation timestamp
+            const baseMs = isOver48h 
+                ? (Date.now() - 50 * 3600 * 1000) 
+                : createdAtMs;
+
+            const d1 = new Date(baseMs);
+
+            // Step 2: 2.5 hours after Step 1
+            const d2 = new Date(d1.getTime() + (2 + (seed % 2)) * 3600 * 1000 + (seed % 40) * 60 * 1000);
+
+            // Step 3: Pedido Postado -> ESTRITAMENTE ENTRE 08:00 e 17:00!
+            const d3 = new Date(d2.getTime() + 4 * 3600 * 1000);
+            const postHour = 8 + (seed % 9); // Always: 8, 9, 10, 11, 12, 13, 14, 15, or 16 (never 17+)
+            const postMin = 10 + (seed % 45); // Always: 10 to 54 min
+            d3.setHours(postHour, postMin, 0, 0);
+
+            // Ensure chronological progression
+            if (d3.getTime() <= d2.getTime()) {
+                d3.setDate(d3.getDate() + 1);
+            }
+            if (d3.getDay() === 0) d3.setDate(d3.getDate() + 1); // Avoid Sunday
+
+            // Step 4: CD de São Paulo (~12h after post)
+            const d4 = new Date(d3.getTime() + (11 + (seed % 5)) * 3600 * 1000);
+
+            // Step 5: Fiscalização aduaneira (~10h after Step 4)
+            const d5 = new Date(d4.getTime() + (8 + (seed % 4)) * 3600 * 1000);
+
+            // Step 6: Conclusão da Aduana / Taxa (Exatamente 48 horas após criação do pedido)
+            const d6 = new Date(d1.getTime() + 48 * 3600 * 1000);
+
+            const fmt = (d) => {
+                const h = String(d.getHours()).padStart(2, '0');
+                const m = String(d.getMinutes()).padStart(2, '0');
+                return `${d.toLocaleDateString('pt-BR')} às ${h}:${m}`;
+            };
+
+            return {
+                isOver48h,
+                realElapsedHours,
+                step1: fmt(d1),
+                step2: fmt(d2),
+                step3: fmt(d3),
+                step4: fmt(d4),
+                step5: fmt(d5),
+                step6: fmt(d6)
+            };
         }
 
         function renderOrderDetails(order) {
@@ -860,20 +985,15 @@
             document.getElementById('track-item-text').textContent = `Costela de Adão (Muda ${order.size || 'M'})`;
             document.getElementById('track-address-text').textContent = `${city}/${state}`;
 
-            // Set timestamps
-            // 48h Interval for authentic logistic progression (Steps 1 to 5)
-            const now = new Date();
-            const formatTime = (hDelta) => {
-                const d = new Date(now.getTime() - hDelta * 3600 * 1000);
-                const dayLabel = hDelta >= 40 ? ' (2 dias atrás)' : (hDelta >= 20 ? ' (Ontem)' : ' (Hoje)');
-                return `${d.toLocaleDateString('pt-BR')} às ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}${dayLabel}`;
-            };
+            // Calculate schedule
+            const schedule = calculateLogisticSchedule(order, isSimulating48h);
 
-            document.getElementById('date-step-1').textContent = formatTime(48);
-            document.getElementById('date-step-2').textContent = formatTime(36);
-            document.getElementById('date-step-3').textContent = formatTime(24);
-            document.getElementById('date-step-4').textContent = formatTime(12);
-            document.getElementById('date-step-5').textContent = formatTime(3);
+            // Set timestamps for steps 1-5
+            document.getElementById('date-step-1').textContent = schedule.step1;
+            document.getElementById('date-step-2').textContent = schedule.step2;
+            document.getElementById('date-step-3').textContent = schedule.step3;
+            document.getElementById('date-step-4').textContent = schedule.step4;
+            document.getElementById('date-step-5').textContent = schedule.step5;
 
             // Step 8: Regional Logistical Center based on Location
             document.getElementById('title-step-8').textContent = `Seu pedido chegou ao centro logístico de ${city} / ${state}`;
@@ -883,17 +1003,50 @@
             const fullAddr = order.address || `${city}/${state}`;
             document.getElementById('desc-step-9').textContent = `O entregador seguirá para entrega no endereço: ${fullAddr}.`;
 
-            // Apply paid vs unpaid state
-            updatePaidUI(order.taxPaid);
+            // Update Simulation Bar UI
+            const simTimeLabel = document.getElementById('sim-time-label');
+            const btnSim = document.getElementById('btn-sim-toggle');
+            if (simTimeLabel && btnSim) {
+                if (order.taxPaid) {
+                    simTimeLabel.innerHTML = `<span style="color: #059669; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Taxa Paga • Rota Final Ativa</span>`;
+                    btnSim.style.display = 'none';
+                } else if (schedule.isOver48h) {
+                    simTimeLabel.innerHTML = `<span style="color: #d97706; font-weight: 700;"><i class="fa-solid fa-triangle-exclamation"></i> +48h Decorridas (2 dias) • Taxa de R$ 12 Ativa</span>`;
+                    btnSim.style.display = 'inline-flex';
+                    btnSim.innerHTML = `<i class="fa-solid fa-backward"></i> <span>Ver Tempo Real (&lt; 48h - Ocultar Taxa)</span>`;
+                } else {
+                    simTimeLabel.innerHTML = `<span style="color: #2563eb; font-weight: 700;"><i class="fa-solid fa-clock"></i> &lt; 48h Decorridas • Em Triagem (Taxa Oculta)</span>`;
+                    btnSim.style.display = 'inline-flex';
+                    btnSim.innerHTML = `<i class="fa-solid fa-forward"></i> <span>Avançar +48h (Ver Taxa R$12)</span>`;
+                }
+            }
+
+            // Apply paid vs unpaid vs under-48h state
+            updatePaidUI(order.taxPaid, schedule.isOver48h, schedule.step6);
+
+            // Generate Woovi PIX if over 48h and not yet paid
+            if (schedule.isOver48h && !order.taxPaid) {
+                generateWooviPix(order);
+            }
         }
 
-        function updatePaidUI(isPaid) {
+        function toggleSimulate48h() {
+            if (!currentOrder) return;
+            isSimulating48h = !isSimulating48h;
+            renderOrderDetails(currentOrder);
+        }
+
+        function updatePaidUI(isPaid, isOver48h, step6DateStr) {
             const statusPill = document.getElementById('track-status-pill');
-            const statusText = document.getElementById('track-status-text');
             const pixBox = document.getElementById('pix-payment-box');
             const taxPaidBanner = document.getElementById('tax-paid-banner');
 
             const step6 = document.getElementById('step-node-6');
+            const dotStep6 = document.getElementById('dot-step-6');
+            const titleStep6 = document.getElementById('title-step-6');
+            const descStep6 = document.getElementById('desc-step-6');
+            const dateStep6 = document.getElementById('date-step-6');
+
             const step7 = document.getElementById('step-node-7');
             const step8 = document.getElementById('step-node-8');
             const step9 = document.getElementById('step-node-9');
@@ -911,13 +1064,16 @@
                     <i class="fa-solid fa-circle-check" style="font-size: 24px;"></i>
                     <div>
                         Taxa de Liberação Confirmada via PIX!<br>
-                        <span style="font-size: 0.76rem; font-weight: 500;">Remessa desembaraçada. Atualização de entrega programada para o prazo de 10 dias úteis.</span>
+                        <span style="font-size: 0.76rem; font-weight: 500;">Remessa desembaraçada. Atualização de entrega programada para o prazo de 10 dias corridos.</span>
                     </div>
                 `;
 
                 // Step 6: Aguardando Pagamento -> Concluído
                 step6.className = 'step-item completed';
-                step6.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
+                dotStep6.innerHTML = '<i class="fa-solid fa-check"></i>';
+                titleStep6.textContent = 'Fiscalização aduaneira finalizada';
+                descStep6.textContent = 'Guia aduaneira de transporte de carga viva liquidada e liberada com sucesso.';
+                dateStep6.textContent = step6DateStr || 'Concluído';
 
                 // Step 7: Taxa Paga
                 step7.className = 'step-item completed';
@@ -938,8 +1094,34 @@
                 step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-truck"></i>';
                 document.getElementById('date-step-9').innerHTML = `<strong>Previsão de entrega no endereço: ${d10.toLocaleDateString('pt-BR')} (Prazo de 10 dias corridos)</strong>`;
 
+            } else if (!isOver48h) {
+                // UI: Less than 48 hours (< 2 days) -> In transit, NO PAYMENT BOX SHOWN!
+                statusPill.className = 'status-pill in-transit';
+                statusPill.innerHTML = '<i class="fa-solid fa-shield-halved"></i> <span>Em Trânsito • Fiscalização Aduaneira</span>';
+
+                pixBox.style.display = 'none';
+                taxPaidBanner.style.display = 'none';
+
+                step6.className = 'step-item in-progress';
+                dotStep6.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #2563eb;"></i>';
+                titleStep6.textContent = 'Fiscalização aduaneira e triagem fitossanitária';
+                descStep6.textContent = 'Remessa em conferência fitossanitária e controle de transporte de carga viva. Liberação estimada em até 48 horas da postagem.';
+                dateStep6.textContent = 'Em triagem fiscal (prazo: até 48h)';
+
+                step7.className = 'step-item locked';
+                step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
+                document.getElementById('date-step-7').textContent = 'Pendente de conclusão da triagem aduaneira';
+
+                step8.className = 'step-item locked';
+                step8.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
+                document.getElementById('date-step-8').textContent = 'Aguardando liberação fiscal';
+
+                step9.className = 'step-item locked';
+                step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
+                document.getElementById('date-step-9').textContent = 'Prazo de 10 dias iniciará após liberação';
+
             } else {
-                // UI: Waiting payment
+                // UI: Over 48 hours (>= 2 days) AND unpaid -> Waiting payment, PIX BOX SHOWN!
                 statusPill.className = 'status-pill waiting';
                 statusPill.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> <span>Aguardando Pagamento da Taxa</span>';
 
@@ -947,7 +1129,10 @@
                 taxPaidBanner.style.display = 'none';
 
                 step6.className = 'step-item current-warning';
-                step6.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-exclamation"></i>';
+                dotStep6.innerHTML = '<i class="fa-solid fa-exclamation"></i>';
+                titleStep6.textContent = 'Aguardando pagamento';
+                descStep6.textContent = 'A fiscalização aduaneira concluiu a triagem e emitiu a taxa postal de liberação de carga viva (R$ 12,00). O envio está retido aguardando liquidação.';
+                dateStep6.textContent = `${step6DateStr} (após 48h de triagem)`;
 
                 step7.className = 'step-item locked';
                 step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
@@ -1033,7 +1218,7 @@
             if (!currentOrder) return;
 
             currentOrder.taxPaid = true;
-            updatePaidUI(true);
+            renderOrderDetails(currentOrder);
 
             // Persist payment state to localStorage
             try {
