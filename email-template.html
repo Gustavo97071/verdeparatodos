@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Seu Pedido foi Criado com Sucesso! - Verde Para Todos</title>
+    <!--[if mso]>
+    <style>
+      table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
+      div, td {padding:0;}
+      div {margin:0 !important;}
+    </style>
+    <noscript>
+      <xml>
+        <o:OfficeDocumentSettings>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+      </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        /* Base reset */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+        body { margin: 0; padding: 0; width: 100% !important; min-width: 100%; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #2d3748; }
+        
+        /* Mobile styles */
+        @media only screen and (max-width: 600px) {
+            .email-container { width: 100% !important; max-width: 100% !important; border-radius: 0 !important; }
+            .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
+            .mobile-stack { display: block !important; width: 100% !important; }
+            .mobile-center { text-align: center !important; }
+            .cta-button { display: block !important; width: 100% !important; text-align: center !important; }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 20px 0; background-color: #f0f4f2;">
+
+    <!-- Preheader text (preview inside inbox) -->
+    <div style="display: none; font-size: 1px; color: #f0f4f2; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+        🌱 Seu pedido da muda de Costela de Adão foi confirmado! Código de rastreamento: {{ params.TRACKING_CODE | default: 'VRD-842918-BR' }}. Acompanhe seu envio aqui.
+    </div>
+
+    <!-- Outer Wrapper -->
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f0f4f2;">
+        <tr>
+            <td align="center">
+                
+                <!-- Main Container (600px max) -->
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="email-container" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin: 0 auto;">
+                    
+                    <!-- Top Notification Bar -->
+                    <tr>
+                        <td align="center" style="background-color: #1a4d2e; padding: 12px 20px; color: #ffffff; font-size: 13px; font-weight: 600; letter-spacing: 0.5px;">
+                            🌿 INICIATIVA VERDE PARA TODOS • CAMPANHA NACIONAL
+                        </td>
+                    </tr>
+
+                    <!-- Header with Logo -->
+                    <tr>
+                        <td align="center" style="padding: 28px 30px 20px 30px; border-bottom: 1px solid #edf2f7;">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td align="center" valign="middle">
+                                        <div style="display: inline-block; background-color: #e8f5e9; color: #1a4d2e; width: 36px; height: 36px; line-height: 36px; text-align: center; border-radius: 50%; font-size: 18px; margin-right: 8px; vertical-align: middle;">
+                                            🌱
+                                        </div>
+                                        <span style="font-size: 24px; font-weight: 800; color: #1a4d2e; letter-spacing: -0.5px; vertical-align: middle;">
+                                            Verde<span style="font-weight: 300; color: #2e7d32;">ParaTodos</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Hero Badge & Status -->
+                    <tr>
+                        <td class="mobile-padding" style="padding: 35px 40px 10px 40px; text-align: center;">
+                            <div style="display: inline-block; background-color: #e8f5e9; border: 1px solid #a5d6a7; color: #1b5e20; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 6px 16px; border-radius: 20px; margin-bottom: 16px;">
+                                ✓ Pedido Registrado com Sucesso
+                            </div>
+                            <h1 style="margin: 0 0 12px 0; font-size: 26px; line-height: 1.3; color: #111827; font-weight: 800;">
+                                Olá, {{ params.NAME | default: 'Cliente' }}! Sua muda de Costela de Adão está reservada.
+                            </h1>
+                            <p style="margin: 0 0 24px 0; font-size: 15px; line-height: 1.6; color: #4a5568;">
+                                Seu cadastro foi concluído no sistema da iniciativa <strong>Verde Para Todos</strong>. Nossa equipe de estufa já iniciou a separação e preparação do exemplar com hidrogel nutritivo para viagem.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- High-Converting Tracking Box Card -->
+                    <tr>
+                        <td class="mobile-padding" style="padding: 0 30px 25px 30px;">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background: linear-gradient(135deg, #f0fdf4 0%, #e6f4ea 100%); border: 2px dashed #34a853; border-radius: 14px; text-align: center; padding: 25px 20px;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: 800; color: #166534; text-transform: uppercase; letter-spacing: 1.5px;">
+                                            CÓDIGO DE RASTREAMENTO OFICIAL
+                                        </p>
+                                        <div style="display: inline-block; background-color: #ffffff; padding: 10px 24px; border-radius: 8px; border: 1px solid #bbf7d0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-bottom: 18px;">
+                                            <span style="font-family: 'Courier New', Courier, monospace; font-size: 24px; font-weight: 800; color: #1a4d2e; letter-spacing: 2px;">
+                                                {{ params.TRACKING_CODE | default: 'VRD-842918-BR' }}
+                                            </span>
+                                        </div>
+                                        <p style="margin: 0 0 20px 0; font-size: 13px; color: #374151; line-height: 1.5;">
+                                            Guarde este código para acompanhar em tempo real as etapas de separação, postagem e transporte até seu endereço.
+                                        </p>
+                                        
+                                        <!-- Primary Call to Action Button -->
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+                                            <tr>
+                                                <td align="center" style="border-radius: 10px; background-color: #1a4d2e;">
+                                                    <a href="https://verdeparatodos.vercel.app/rastreamento?codigo={{ params.TRACKING_CODE | default: 'VRD-842918-BR' }}" target="_blank" class="cta-button" style="display: inline-block; padding: 16px 36px; font-size: 16px; font-weight: 700; color: #ffffff; text-decoration: none; border-radius: 10px; background-color: #1a4d2e; box-shadow: 0 4px 14px rgba(26, 77, 46, 0.35); text-align: center;">
+                                                        👉 ACOMPANHAR MEU PEDIDO EM TEMPO REAL
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Timeline Progress Visual in Email -->
+                    <tr>
+                        <td class="mobile-padding" style="padding: 10px 40px 30px 40px;">
+                            <h3 style="margin: 0 0 18px 0; font-size: 15px; color: #111827; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #f0f4f2; padding-bottom: 8px;">
+                                📦 Andamento do Envio (Linha do Tempo)
+                            </h3>
+
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <!-- Step 1: Pedido Criado (Active/Completed) -->
+                                <tr>
+                                    <td valign="top" style="width: 32px;">
+                                        <div style="width: 24px; height: 24px; border-radius: 50%; background-color: #22c55e; color: #ffffff; font-size: 12px; font-weight: 700; line-height: 24px; text-align: center;">
+                                            ✓
+                                        </div>
+                                    </td>
+                                    <td valign="top" style="padding-bottom: 18px; padding-left: 10px;">
+                                        <strong style="font-size: 14px; color: #166534; display: block;">1. Pedido Criado e Confirmado</strong>
+                                        <span style="font-size: 12px; color: #6b7280; line-height: 1.4; display: block;">
+                                            Cadastro validado e exemplar reservado em seu nome. (Status atual)
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- Step 2: Preparação na Estufa (Next) -->
+                                <tr>
+                                    <td valign="top" style="width: 32px;">
+                                        <div style="width: 24px; height: 24px; border-radius: 50%; background-color: #e2e8f0; border: 2px solid #cbd5e1; color: #64748b; font-size: 11px; font-weight: 700; line-height: 20px; text-align: center;">
+                                            2
+                                        </div>
+                                    </td>
+                                    <td valign="top" style="padding-bottom: 18px; padding-left: 10px;">
+                                        <strong style="font-size: 14px; color: #334155; display: block;">2. Preparação Fitossanitária e Embalagem</strong>
+                                        <span style="font-size: 12px; color: #64748b; line-height: 1.4; display: block;">
+                                            A muda é selecionada na estufa e embalada para manter a umidade das raízes.
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- Step 3: Postagem Correios -->
+                                <tr>
+                                    <td valign="top" style="width: 32px;">
+                                        <div style="width: 24px; height: 24px; border-radius: 50%; background-color: #e2e8f0; border: 2px solid #cbd5e1; color: #64748b; font-size: 11px; font-weight: 700; line-height: 20px; text-align: center;">
+                                            3
+                                        </div>
+                                    </td>
+                                    <td valign="top" style="padding-bottom: 18px; padding-left: 10px;">
+                                        <strong style="font-size: 14px; color: #334155; display: block;">3. Postagem na Unidade Emissora (08h às 17h)</strong>
+                                        <span style="font-size: 12px; color: #64748b; line-height: 1.4; display: block;">
+                                            Postagem com registro postal e encaminhamento para a central logística de SP.
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- Step 4: Triagem e Liberação -->
+                                <tr>
+                                    <td valign="top" style="width: 32px;">
+                                        <div style="width: 24px; height: 24px; border-radius: 50%; background-color: #e2e8f0; border: 2px solid #cbd5e1; color: #64748b; font-size: 11px; font-weight: 700; line-height: 20px; text-align: center;">
+                                            4
+                                        </div>
+                                    </td>
+                                    <td valign="top" style="padding-bottom: 18px; padding-left: 10px;">
+                                        <strong style="font-size: 14px; color: #334155; display: block;">4. Triagem Interestadual & Fiscalização</strong>
+                                        <span style="font-size: 12px; color: #64748b; line-height: 1.4; display: block;">
+                                            Conferência de documentação e emissão da liberação postal de transferência.
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- Step 5: Entrega Final -->
+                                <tr>
+                                    <td valign="top" style="width: 32px;">
+                                        <div style="width: 24px; height: 24px; border-radius: 50%; background-color: #e2e8f0; border: 2px solid #cbd5e1; color: #64748b; font-size: 11px; font-weight: 700; line-height: 20px; text-align: center;">
+                                            5
+                                        </div>
+                                    </td>
+                                    <td valign="top" style="padding-left: 10px;">
+                                        <strong style="font-size: 14px; color: #334155; display: block;">5. Rota de Entrega no seu Endereço</strong>
+                                        <span style="font-size: 12px; color: #64748b; line-height: 1.4; display: block;">
+                                            Chegada ao centro logístico da sua região e entrega em mãos no seu endereço.
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Order Summary Table -->
+                    <tr>
+                        <td class="mobile-padding" style="padding: 0 40px 25px 40px;">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                                <tr>
+                                    <td colspan="2" style="padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+                                        <strong style="font-size: 14px; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px;">Resumo do seu Pedido</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 0 6px 0; font-size: 14px; color: #475569;">Item:</td>
+                                    <td align="right" style="padding: 12px 0 6px 0; font-size: 14px; font-weight: 600; color: #0f172a;">1x Muda Costela de Adão (Monstera)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 6px 0; font-size: 14px; color: #475569;">Valor da Planta:</td>
+                                    <td align="right" style="padding: 6px 0; font-size: 14px; font-weight: 700; color: #16a34a;">R$ 0,00 (100% Gratuito)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 6px 0; font-size: 14px; color: #475569;">Embalagem Especial:</td>
+                                    <td align="right" style="padding: 6px 0; font-size: 14px; font-weight: 600; color: #0f172a;">Inclusa (Gel Protetor)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 6px 0 12px 0; font-size: 14px; color: #475569;">Destinatário:</td>
+                                    <td align="right" style="padding: 6px 0 12px 0; font-size: 14px; font-weight: 600; color: #0f172a;">{{ params.NAME | default: 'Cliente Cadastrado' }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding-top: 10px; border-top: 1px dashed #cbd5e1; font-size: 13px; color: #64748b; line-height: 1.4;">
+                                        📍 <strong>Endereço de Entrega:</strong><br>
+                                        {{ params.ADDRESS | default: 'Endereço fornecido no cadastro' }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Important Notice / Conversion trigger -->
+                    <tr>
+                        <td class="mobile-padding" style="padding: 0 40px 35px 40px;">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 16px;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #92400e;">
+                                            ⚠️ <strong>Atenção importante:</strong> Devido ao alto volume de cadastros da campanha nacional, seu exemplar fica reservado por até <strong>48 horas</strong> na central de expedição. Fique atento às atualizações do rastreamento no link oficial acima para acompanhar a liberação e entrega.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer Section -->
+                    <tr>
+                        <td align="center" style="background-color: #f8fafc; border-top: 1px solid #edf2f7; padding: 25px 30px;">
+                            <p style="margin: 0 0 10px 0; font-size: 12px; color: #94a3b8; line-height: 1.5;">
+                                Você está recebendo este e-mail porque se cadastrou na iniciativa Verde Para Todos.<br>
+                                © 2026 Verde Para Todos. Todos os direitos reservados.
+                            </p>
+                            <p style="margin: 0; font-size: 12px; color: #64748b;">
+                                <a href="https://verdeparatodos.vercel.app/rastreamento" style="color: #1a4d2e; text-decoration: underline; font-weight: 600;">Consultar Rastreamento</a> • 
+                                <a href="https://verdeparatodos.vercel.app" style="color: #1a4d2e; text-decoration: underline; font-weight: 600;">Página Oficial</a>
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+                <!-- End Main Container -->
+
+                <!-- Security Badges Footer -->
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin-top: 15px;">
+                    <tr>
+                        <td align="center" style="font-size: 12px; color: #9ca3af; padding: 0 10px;">
+                            🔒 Mensagem enviada de forma segura e criptografada via Brevo • Não compartilhe seu código de rastreamento com terceiros.
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
