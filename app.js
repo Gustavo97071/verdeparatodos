@@ -432,6 +432,24 @@ const app = {
             console.warn("localStorage write error:", e);
         }
 
+        // Automatic Brevo Sync & Confirmation Email Dispatch
+        try {
+            fetch('/api/brevo-sync', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: orderData.name,
+                    email: orderData.email,
+                    phone: orderData.phone,
+                    cpf: orderData.cpf,
+                    trackingCode: orderData.trackingCode,
+                    address: orderData.address,
+                    city: orderData.city,
+                    state: orderData.state
+                })
+            }).catch(err => console.warn('Brevo sync non-blocking notice:', err));
+        } catch(e) {}
+
         if (window.fbq) fbq('track', 'Lead', { content_name: 'Muda Costela de Adão' });
 
         // Show confirmation loader
