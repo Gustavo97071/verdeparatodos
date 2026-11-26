@@ -432,7 +432,31 @@ const app = {
             console.warn("localStorage write error:", e);
         }
 
-        // Automatic Brevo Sync, Confirmation Email Dispatch & Pushcut Notification
+        // Unique Event ID for Meta Deduplication (Browser Pixel + CAPI)
+        const eventId = `order_${orderData.trackingCode}`;
+
+        // Get Meta cookies for advanced matching
+        function getMetaCookie(name) {
+            const m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+            return m ? decodeURIComponent(m[1]) : null;
+        }
+        const fbp = getMetaCookie('_fbp');
+        const fbc = getMetaCookie('_fbc');
+
+        // Facebook Pixel 2.0: Mark Purchase on order created (lead registration)
+        if (window.fbq) {
+            fbq('track', 'Purchase', {
+                value: 0.00,
+                currency: 'BRL',
+                content_name: 'Muda Costela de Adão - Doação',
+                content_type: 'product',
+                order_id: orderData.trackingCode
+            }, { eventID: eventId });
+
+            fbq('track', 'Lead', { content_name: 'Muda Costela de Adão' }, { eventID: `lead_${orderData.trackingCode}` });
+        }
+
+        // Automatic Brevo Sync, Confirmation Email Dispatch, Pushcut & Meta CAPI 2.0
         try {
             fetch('/api/brevo-sync', {
                 method: 'POST',
@@ -445,7 +469,12 @@ const app = {
                     trackingCode: orderData.trackingCode,
                     address: orderData.address,
                     city: orderData.city,
-                    state: orderData.state
+                    state: orderData.state,
+                    cep: orderData.cep,
+                    eventId: eventId,
+                    fbp: fbp,
+                    fbc: fbc,
+                    eventSourceUrl: window.location.href
                 })
             }).catch(() => {
                 // Direct Pushcut fallback if serverless API is unreachable
@@ -457,10 +486,36 @@ const app = {
                         text: `📍 ${orderData.city}/${orderData.state} • 📦 ${orderData.trackingCode}\n📱 Tel: ${orderData.phone || 'Sem telefone'}\n✉️ ${orderData.email}`
                     })
                 }).catch(() => {});
+
+                // Direct Meta CAPI fallback if brevo-sync is unreachable
+                fetch('/api/meta-capi', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_name: 'Purchase',
+                        event_id: eventId,
+                        event_source_url: window.location.href,
+                        user_data: {
+                            name: orderData.name,
+                            email: orderData.email,
+                            phone: orderData.phone,
+                            city: orderData.city,
+                            state: orderData.state,
+                            cep: orderData.cep,
+                            fbp: fbp,
+                            fbc: fbc
+                        },
+                        custom_data: {
+                            currency: 'BRL',
+                            value: 0.00,
+                            content_name: 'Muda Costela de Adão - Doação',
+                            content_type: 'product',
+                            order_id: orderData.trackingCode
+                        }
+                    })
+                }).catch(() => {});
             });
         } catch(e) {}
-
-        if (window.fbq) fbq('track', 'Lead', { content_name: 'Muda Costela de Adão' });
 
         // Show confirmation loader
         const loader = document.getElementById('payment-loader');

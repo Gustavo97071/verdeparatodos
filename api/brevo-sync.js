@@ -146,11 +146,132 @@ module.exports = async (req, res) => {
             console.warn('Pushcut notification error:', pushErr);
         }
 
+        // 4. Meta Conversions API 2.0 (CAPI) - Purchase Event on Order Created
+        let metaCapiResult = null;
+        try {
+            const fbPixelId = process.env.FB_PIXEL_ID || '1176179324850189';
+            const fbAccessToken = process.env.FB_ACCESS_TOKEN;
+
+            if (fbAccessToken) {
+                const crypto = require('crypto');
+                const hash = (val) => {
+                    if (!val) return undefined;
+                    return crypto.createHash('sha256').update(String(val).trim().toLowerCase()).digest('hex');
+                };
+
+                const nameParts = cleanName.split(' ');
+                const fn = hash(nameParts[0]);
+                const ln = hash(nameParts.slice(1).join(' ') || nameParts[0]);
+                const em = hash(email);
+                
+                let rawPhone = (phone || '').replace(/\D/g, '');
+                if (rawPhone.length >= 10 && !rawPhone.startsWith('55')) {
+                    rawPhone = '55' + rawPhone;
+                }
+                const ph = rawPhone ? hash(rawPhone) : undefined;
+                const ct = hash(cleanCity);
+                const st = hash(cleanState);
+                const zp = body.cep ? hash(body.cep.replace(/\D/g, '')) : undefined;
+                const country = hash('br');
+
+                const clientIp = req.headers['x-forwarded-for'] 
+                    ? req.headers['x-forwarded-for'].split(',')[0].trim() 
+                    : (req.socket ? req.socket.remoteAddress : undefined);
+                const userAgent = req.headers['user-agent'] || undefined;
+
+                // Extract _fbp and _fbc
+                let fbp = body.fbp;
+                let fbc = body.fbc;
+                if (!fbp || !fbc) {
+                    const cookieHeader = req.headers.cookie || '';
+                    if (!fbp) {
+                        const mFbp = cookieHeader.match(/(?:^|;\s*)_fbp=([^;]+)/);
+                        if (mFbp) fbp = mFbp[1];
+                    }
+                    if (!fbc) {
+                        const mFbc = cookieHeader.match(/(?:^|;\s*)_fbc=([^;]+)/);
+                        if (mFbc) fbc = mFbc[1];
+                    }
+                }
+
+                const capiEventId = body.eventId || `order_${cleanCode}`;
+                const eventSourceUrl = body.eventSourceUrl || 'https://verdeparatodos.online';
+
+                const capiUserData = {
+                    client_ip_address: clientIp,
+                    client_user_agent: userAgent
+                };
+                if (em) capiUserData.em = [em];
+                if (ph) capiUserData.ph = [ph];
+                if (fn) capiUserData.fn = [fn];
+                if (ln) capiUserData.ln = [ln];
+                if (ct) capiUserData.ct = [ct];
+                if (st) capiUserData.st = [st];
+                if (zp) capiUserData.zp = [zp];
+                if (country) capiUserData.country = [country];
+                if (fbp) capiUserData.fbp = fbp;
+                if (fbc) capiUserData.fbc = fbc;
+
+                const capiPayload = JSON.stringify({
+                    data: [
+                        {
+                            event_name: 'Purchase',
+                            event_time: Math.floor(Date.now() / 1000),
+                            event_id: capiEventId,
+                            event_source_url: eventSourceUrl,
+                            action_source: 'website',
+                            user_data: capiUserData,
+                            custom_data: {
+                                currency: 'BRL',
+                                value: 0.00,
+                                content_name: 'Muda Costela de Adão - Doação',
+                                content_type: 'product',
+                                order_id: cleanCode
+                            }
+                        }
+                    ],
+                    access_token: fbAccessToken
+                });
+
+                metaCapiResult = await new Promise((resolve) => {
+                    const fbReq = https.request({
+                        hostname: 'graph.facebook.com',
+                        port: 443,
+                        path: `/v19.0/${fbPixelId}/events`,
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Content-Length': Buffer.byteLength(capiPayload)
+                        }
+                    }, (fbRes) => {
+                        let data = '';
+                        fbRes.on('data', chunk => data += chunk);
+                        fbRes.on('end', () => {
+                            try {
+                                resolve({ statusCode: fbRes.statusCode, data: JSON.parse(data) });
+                            } catch(e) {
+                                resolve({ statusCode: fbRes.statusCode, raw: data });
+                            }
+                        });
+                    });
+                    fbReq.on('error', (err) => {
+                        console.warn('Meta CAPI request error:', err.message);
+                        resolve({ error: err.message });
+                    });
+                    fbReq.write(capiPayload);
+                    fbReq.end();
+                });
+            }
+        } catch (capiErr) {
+            console.warn('Meta CAPI trigger exception:', capiErr);
+        }
+
         return res.status(200).json({
             success: true,
             contactSaved: true,
             emailSent: sendResult.statusCode === 201 || sendResult.statusCode === 200,
             pushcutNotified: true,
+            metaCapi: metaCapiResult,
             result: sendResult
         });
 
