@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Rastreamento Oficial - Verde Para Todos</title>
     <meta name="description" content="Acompanhe o status e a liberação de envio da sua muda de Costela de Adão em tempo real.">
     
@@ -17,11 +17,14 @@
 
     <style>
         .tracking-page-container {
-            padding: 18px 16px 40px;
+            flex: 1 1 auto;
+            height: 100%;
+            min-height: 0;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+            padding: 18px 16px max(50px, env(safe-area-inset-bottom, 30px));
             font-family: var(--font-ui);
             background: #fff;
-            min-height: calc(100% - 65px);
-            overflow-y: auto;
         }
 
         .tracking-hero-header {
@@ -89,11 +92,12 @@
             padding: 12px 14px;
             border: 1.5px solid var(--clr-border);
             border-radius: 8px;
-            font-size: 0.92rem;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
             font-family: var(--font-ui);
             color: var(--clr-text-main);
             outline: none;
             background: #fff;
+            min-height: 46px;
             transition: border-color 0.2s;
         }
 
@@ -474,26 +478,29 @@
         .pix-copy-input {
             flex: 1;
             padding: 10px 12px;
-            font-size: 0.8rem;
+            font-size: 14px;
             background: #fff;
             border: 1px solid #fde68a;
             border-radius: 6px;
             outline: none;
             color: #451a03;
+            min-height: 44px;
         }
 
         .btn-copy-pix {
             background: #d97706;
             color: #fff;
             border: none;
-            padding: 0 14px;
+            padding: 0 16px;
             border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 0.88rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            gap: 6px;
+            min-height: 44px;
             transition: var(--transition-fast);
         }
 
