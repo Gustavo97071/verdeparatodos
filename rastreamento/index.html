@@ -173,81 +173,6 @@
             border: 1px solid #bfdbfe;
         }
 
-        .sim-control-bar {
-            background: #f8fafc;
-            border: 1.5px dashed #cbd5e1;
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .sim-buttons-row {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        .btn-milestone {
-            background: #fff;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-            padding: 6px 8px;
-            border-radius: 6px;
-            font-size: 0.70rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            flex: 1 1 calc(33.3% - 6px);
-            text-align: center;
-        }
-
-        @media (min-width: 500px) {
-            .btn-milestone {
-                flex: 1;
-            }
-        }
-
-        .btn-milestone:hover {
-            border-color: #2E5026;
-            color: #2E5026;
-        }
-
-        .btn-milestone.active {
-            background: #2E5026 !important;
-            border-color: #2E5026 !important;
-            color: #fff !important;
-        }
-
-        .btn-milestone.highlight-fee {
-            border-color: #f59e0b;
-            color: #b45309;
-            background: #fffbeb;
-        }
-
-        .btn-milestone.highlight-fee.active {
-            background: #d97706 !important;
-            border-color: #d97706 !important;
-            color: #fff !important;
-        }
-
-        .btn-milestone.btn-real {
-            background: #0f172a;
-            color: #fff;
-            border-color: #0f172a;
-        }
-
-        .btn-milestone.btn-real.active {
-            background: #1e293b !important;
-            border-color: #3b82f6 !important;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
-        }
-
         .step-item.in-progress .step-dot {
             background: #eff6ff;
             border-color: #3b82f6;
@@ -532,25 +457,6 @@
             to { transform: rotate(360deg); }
         }
 
-        .btn-simulate-paid {
-            background: none;
-            border: 1px dashed #d97706;
-            color: #92400e;
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 12px;
-            opacity: 0.85;
-            transition: opacity 0.2s;
-        }
-
-        .btn-simulate-paid:hover {
-            opacity: 1;
-            background: #fff;
-        }
-
         /* Success Alert on Payment Confirmed */
         .tax-paid-success-banner {
             background: #ecfdf5;
@@ -689,26 +595,6 @@
                     </div>
                 </div>
 
-                <!-- Demo / Simulation Controls Bar (Progressive 48h) -->
-                <div class="sim-control-bar" id="sim-control-bar">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
-                        <div style="display: flex; align-items: center; gap: 6px; color: #475569; font-size: 0.76rem;">
-                            <i class="fa-solid fa-clock-rotate-left" style="color: #64748b;"></i>
-                            <span>Tempo da Encomenda: <strong id="sim-time-label">0h (Pedido Criado)</strong></span>
-                        </div>
-                        <span style="font-size: 0.68rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Simulador das 48h</span>
-                    </div>
-                    <div class="sim-buttons-row">
-                        <button type="button" class="btn-milestone" id="m-btn-0" onclick="setSimulatedHours(0)">0h: Criado</button>
-                        <button type="button" class="btn-milestone" id="m-btn-8" onclick="setSimulatedHours(8)">8h: Preparo</button>
-                        <button type="button" class="btn-milestone" id="m-btn-18" onclick="setSimulatedHours(18)">18h: Postado</button>
-                        <button type="button" class="btn-milestone" id="m-btn-30" onclick="setSimulatedHours(30)">30h: CD SP</button>
-                        <button type="button" class="btn-milestone" id="m-btn-40" onclick="setSimulatedHours(40)">40h: Aduana</button>
-                        <button type="button" class="btn-milestone highlight-fee" id="m-btn-48" onclick="setSimulatedHours(48)">48h: Taxa R$12</button>
-                        <button type="button" class="btn-milestone btn-real" id="m-btn-real" onclick="setSimulatedHours(null)">🕒 Tempo Real</button>
-                    </div>
-                </div>
-
                 <h3 class="timeline-section-title"><i class="fa-solid fa-timeline"></i> Linha do Tempo da Entrega</h3>
                 
                 <!-- 9-Step Localized Timeline -->
@@ -796,11 +682,6 @@
                                     <div class="pix-polling-spinner"></div>
                                     <span>Aguardando compensação do PIX...</span>
                                 </div>
-
-                                <!-- Discreet simulate button for quick testing -->
-                                <button type="button" class="btn-simulate-paid" onclick="simulatePaymentApproval()">
-                                    ✓ Simular Pagamento Aprovado (Teste)
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -849,7 +730,6 @@
     <!-- Script for Tracking Page & Woovi Monetization -->
     <script>
         let currentOrder = null;
-        let simulatedHours = null; // null = real time; or 0, 8, 18, 30, 40, 48
         let pollTimer = null;
 
         function formatCPFInput(e) {
@@ -960,7 +840,6 @@
 
             if (found) {
                 currentOrder = found;
-                simulatedHours = null;
                 notFoundCard.style.display = 'none';
                 resultCard.style.display = 'block';
 
@@ -970,13 +849,6 @@
             } else {
                 resultCard.style.display = 'none';
                 notFoundCard.style.display = 'block';
-            }
-        }
-
-        function setSimulatedHours(h) {
-            simulatedHours = h;
-            if (currentOrder) {
-                renderOrderDetails(currentOrder);
             }
         }
 
@@ -990,15 +862,11 @@
             document.getElementById('track-item-text').textContent = `Costela de Adão (Muda ${order.size || 'M'})`;
             document.getElementById('track-address-text').textContent = `${city}/${state}`;
 
-            // Calculate Effective Progression Time
-            const createdAtMs = order.createdAt ? Number(order.createdAt) : (Date.now() - 20 * 60 * 1000);
+            // Calculate Real Elapsed Progression Time
+            const createdAtMs = order.createdAt ? Number(order.createdAt) : Date.now();
             const realElapsedHours = Math.max(0, (Date.now() - createdAtMs) / (1000 * 60 * 60));
-            const effectiveHours = (simulatedHours !== null) ? simulatedHours : realElapsedHours;
-
-            // Anchor base time for consistent progressive dates
-            const baseMs = (simulatedHours !== null)
-                ? (Date.now() - (effectiveHours * 3600 * 1000))
-                : createdAtMs;
+            const effectiveHours = realElapsedHours;
+            const baseMs = createdAtMs;
 
             const seedStr = (order.trackingCode || order.cpf || '842918').replace(/\D/g, '') || '842918';
             const seed = parseInt(seedStr.slice(-4), 10) || 1234;
@@ -1024,29 +892,6 @@
                 const m = String(d.getMinutes()).padStart(2, '0');
                 return `${d.toLocaleDateString('pt-BR')} às ${h}:${m}`;
             };
-
-            // Update Simulation Panel Active Classes
-            const milestoneBtns = [0, 8, 18, 30, 40, 48];
-            milestoneBtns.forEach(m => {
-                const btn = document.getElementById(`m-btn-${m}`);
-                if (btn) btn.classList.toggle('active', simulatedHours === m);
-            });
-            const btnReal = document.getElementById('m-btn-real');
-            if (btnReal) btnReal.classList.toggle('active', simulatedHours === null);
-
-            // Update Simulation Label
-            const simTimeLabel = document.getElementById('sim-time-label');
-            if (simTimeLabel) {
-                if (order.taxPaid) {
-                    simTimeLabel.innerHTML = `<span style="color: #059669; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Taxa Paga (R$ 12) • Em Rota Final (10 dias)</span>`;
-                } else if (simulatedHours !== null) {
-                    simTimeLabel.innerHTML = `<span style="color: #d97706; font-weight: 700;">Simulado: <strong>${simulatedHours}h decorridas</strong></span>`;
-                } else {
-                    const h = Math.floor(realElapsedHours);
-                    const m = Math.floor((realElapsedHours % 1) * 60);
-                    simTimeLabel.innerHTML = `<span style="color: #2563eb; font-weight: 700;">Tempo Real: <strong>${h}h ${m}m decorridos</strong></span>`;
-                }
-            }
 
             // Step 1: Pedido Criado (0h)
             document.getElementById('date-step-1').textContent = fmt(d1);
@@ -1364,11 +1209,6 @@
                 feedback.style.display = 'block';
                 setTimeout(() => feedback.style.display = 'none', 3000);
             }
-        }
-
-        function simulatePaymentApproval() {
-            confirmPaymentSuccess();
-            alert("✓ Pagamento de R$ 12,00 confirmado com sucesso! A linha do tempo foi atualizada.");
         }
     </script>
 </body>
