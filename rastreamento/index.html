@@ -561,8 +561,8 @@
             <div id="tracking-result-card" class="tracking-card-main" style="display: none;">
                 
                 <div class="tracking-status-header">
-                    <span class="status-pill waiting" id="track-status-pill">
-                        <i class="fa-solid fa-hourglass-half"></i> <span id="track-status-text">Aguardando Pagamento da Taxa</span>
+                    <span class="status-pill in-transit" id="track-status-pill">
+                        <i class="fa-solid fa-truck-fast"></i> <span id="track-status-text">Em Trânsito</span>
                     </span>
                     <span class="tracking-code-pill" id="track-code-text">#VRD-842918-BR</span>
                 </div>
@@ -586,12 +586,12 @@
                     </div>
                 </div>
 
-                <!-- Banner when Tax is Paid -->
+                <!-- Banner when Order is Cleared/Paid -->
                 <div id="tax-paid-banner" class="tax-paid-success-banner" style="display: none;">
                     <i class="fa-solid fa-circle-check" style="font-size: 20px;"></i>
                     <div>
-                        Taxa Aduaneira Confirmada!<br>
-                        <span style="font-size: 0.75rem; font-weight: 500;">Remessa liberada com sucesso para transporte final.</span>
+                        Liberação Confirmada com Sucesso!<br>
+                        <span style="font-size: 0.75rem; font-weight: 500;">Remessa liberada e encaminhada para transferência interestadual.</span>
                     </div>
                 </div>
 
@@ -686,13 +686,13 @@
                         </div>
                     </div>
 
-                    <!-- 7. Taxa Paga (Only unlocks when paid) -->
+                    <!-- 7. Objeto Liberado para Transferência -->
                     <div class="step-item locked" id="step-node-7">
-                        <div class="step-dot"><i class="fa-solid fa-lock"></i></div>
+                        <div class="step-dot" id="dot-step-7"><i class="fa-solid fa-lock"></i></div>
                         <div class="step-content">
-                            <div class="step-title">Taxa paga</div>
-                            <p class="step-desc">Pagamento compensado com sucesso. Objeto liberado para transferência.</p>
-                            <span class="step-date" id="date-step-7">Pendente de pagamento</span>
+                            <div class="step-title" id="title-step-7">Objeto liberado para transferência</div>
+                            <p class="step-desc" id="desc-step-7">Desembaraço aduaneiro concluído e remessa autorizada para o Centro de Distribuição Regional.</p>
+                            <span class="step-date" id="date-step-7">Aguardando liberação</span>
                         </div>
                     </div>
 
@@ -1039,7 +1039,7 @@
                 generateWooviPix(order);
             }
 
-            // Step 7: Taxa Paga
+            // Step 7: Objeto Liberado para Transferência
             const step7 = document.getElementById('step-node-7');
             const step8 = document.getElementById('step-node-8');
             const step9 = document.getElementById('step-node-9');
@@ -1055,7 +1055,9 @@
             if (order.taxPaid) {
                 step7.className = 'step-item completed';
                 step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
-                document.getElementById('date-step-7').textContent = `Confirmado via PIX em ${now.toLocaleDateString('pt-BR')} às ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                document.getElementById('title-step-7').textContent = 'Objeto liberado para transferência';
+                document.getElementById('desc-step-7').textContent = 'Desembaraço aduaneiro concluído e remessa liberada para o centro regional.';
+                document.getElementById('date-step-7').textContent = `Liberado em ${now.toLocaleDateString('pt-BR')} às ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
                 const d5 = new Date(now.getTime() + 5 * 24 * 3600 * 1000);
                 const d10 = new Date(now.getTime() + 10 * 24 * 3600 * 1000);
@@ -1070,15 +1072,17 @@
             } else {
                 step7.className = 'step-item locked';
                 step7.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-7').textContent = 'Pendente de pagamento da guia de liberação';
+                document.getElementById('title-step-7').textContent = 'Objeto liberado para transferência';
+                document.getElementById('desc-step-7').textContent = 'Desembaraço aduaneiro e autorização de transferência para o Centro de Distribuição Regional.';
+                document.getElementById('date-step-7').textContent = 'Aguardando liberação da etapa anterior';
 
                 step8.className = 'step-item locked';
                 step8.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-8').textContent = 'Bloqueado na aduana (aguarda taxa)';
+                document.getElementById('date-step-8').textContent = 'Aguardando transferência para sua região';
 
                 step9.className = 'step-item locked';
                 step9.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-lock"></i>';
-                document.getElementById('date-step-9').textContent = 'Prazo de 10 dias iniciará após pagamento da taxa';
+                document.getElementById('date-step-9').textContent = 'Previsão de 10 dias corridos após chegada no CD regional';
             }
 
             // Status Pill in Card Header
@@ -1103,7 +1107,7 @@
                 statusPill.innerHTML = '<i class="fa-solid fa-shield-halved"></i> <span>Em Fiscalização Aduaneira (Até 48h)</span>';
             } else {
                 statusPill.className = 'status-pill waiting';
-                statusPill.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> <span>Aguardando Pagamento da Taxa</span>';
+                statusPill.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Ação Necessária • Liberação Pendente</span>';
             }
         }
 
