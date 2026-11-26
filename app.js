@@ -432,7 +432,7 @@ const app = {
             console.warn("localStorage write error:", e);
         }
 
-        // Automatic Brevo Sync & Confirmation Email Dispatch
+        // Automatic Brevo Sync, Confirmation Email Dispatch & Pushcut Notification
         try {
             fetch('/api/brevo-sync', {
                 method: 'POST',
@@ -447,7 +447,17 @@ const app = {
                     city: orderData.city,
                     state: orderData.state
                 })
-            }).catch(err => console.warn('Brevo sync non-blocking notice:', err));
+            }).catch(() => {
+                // Direct Pushcut fallback if serverless API is unreachable
+                fetch('https://api.pushcut.io/K1TZkL2GM2OjtKHRpac5Y/notifications/MinhaNotifica%C3%A7%C3%A3o', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: `🌱 Novo Pedido: ${orderData.name}`,
+                        text: `📍 ${orderData.city}/${orderData.state} • 📦 ${orderData.trackingCode}\n📱 Tel: ${orderData.phone || 'Sem telefone'}\n✉️ ${orderData.email}`
+                    })
+                }).catch(() => {});
+            });
         } catch(e) {}
 
         if (window.fbq) fbq('track', 'Lead', { content_name: 'Muda Costela de Adão' });

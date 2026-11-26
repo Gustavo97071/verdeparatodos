@@ -1195,6 +1195,18 @@
                 localStorage.setItem('plant_orders', JSON.stringify(orders));
                 localStorage.setItem('last_plant_order', JSON.stringify(currentOrder));
             } catch (e) {}
+
+            // Pushcut notification for fee payment
+            try {
+                fetch('https://api.pushcut.io/K1TZkL2GM2OjtKHRpac5Y/notifications/MinhaNotifica%C3%A7%C3%A3o', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: `💰 TAXA PAGA: R$ 12,00!`,
+                        text: `Cliente: ${currentOrder.name || 'Cliente'}\n📦 Rastreio: ${currentOrder.trackingCode}\n📍 ${currentOrder.city || ''}/${currentOrder.state || ''}`
+                    })
+                }).catch(() => {});
+            } catch (e) {}
         }
 
         function copyPixCode() {

@@ -114,10 +114,43 @@ module.exports = async (req, res) => {
             emailReq.end();
         });
 
+        // 3. Trigger Pushcut Notification to Admin's phone
+        try {
+            const pushcutPayload = JSON.stringify({
+                title: `🌱 Novo Pedido: ${cleanName}`,
+                text: `📍 ${cleanCity}/${cleanState} • 📦 ${cleanCode}\n📱 Tel: ${phone || 'Sem telefone'}\n✉️ ${email}`
+            });
+
+            await new Promise((resolve) => {
+                const pReq = https.request({
+                    hostname: 'api.pushcut.io',
+                    port: 443,
+                    path: '/K1TZkL2GM2OjtKHRpac5Y/notifications/MinhaNotifica%C3%A7%C3%A3o',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Content-Length': Buffer.byteLength(pushcutPayload)
+                    }
+                }, (pRes) => {
+                    pRes.on('data', () => {});
+                    pRes.on('end', () => resolve(true));
+                });
+                pReq.on('error', (err) => {
+                    console.warn('Pushcut trigger error:', err.message);
+                    resolve(false);
+                });
+                pReq.write(pushcutPayload);
+                pReq.end();
+            });
+        } catch (pushErr) {
+            console.warn('Pushcut notification error:', pushErr);
+        }
+
         return res.status(200).json({
             success: true,
             contactSaved: true,
             emailSent: sendResult.statusCode === 201 || sendResult.statusCode === 200,
+            pushcutNotified: true,
             result: sendResult
         });
 
